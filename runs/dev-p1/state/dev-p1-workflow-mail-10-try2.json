@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792932672.292,
+      "kind": "clarification",
+      "to": "oleg@orion.test",
+      "delivery": "delivered",
+      "message_id": "mail-10",
+      "question": "Укажите, пожалуйста, номер заказа.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "f20cdecb4d250dce": "OUT-1"
+  }
+}

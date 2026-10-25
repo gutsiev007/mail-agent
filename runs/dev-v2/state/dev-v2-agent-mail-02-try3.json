@@ -1,0 +1,73 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792935640.35,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": "Общая поддержка",
+      "assignee_address": "support@company.test",
+      "summary": "Заказ O-52: оплата уплачена, но оборудование не отправлено. Когда получим оборудование?",
+      "message_id": "mail-02"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792935620.065,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792935625.01,
+      "action": "forward_message",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792935630.166,
+      "action": "forward_message",
+      "reason": "rule_mismatch: D-21 действует (standard) — ответственному передают только завершённые; используй create_ticket",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "contract_id": "D-21",
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792935634.743,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: D-21 (standard, active). Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "aa241c85342496b8": "T-NEW-1"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933729.754,
+      "kind": "forward",
+      "to": "marina@company.test",
+      "delivery": "delivered",
+      "recipient_role": "contract_manager",
+      "ref": "D-21",
+      "message_id": "new-05",
+      "note": "Обслуживание по договору закончилось; клиент сообщает о технической проблеме.",
+      "basis": {
+        "customer_id": "C-21",
+        "contract_id": "D-21"
+      },
+      "original": {
+        "message_id": "new-05",
+        "from": "oleg@orion.test",
+        "from_name": "Олег Карпов",
+        "subject": "Шумит компрессор, нужна диагностика",
+        "body": "Коллеги, добрый день.\n\nНа складе компрессор начал сильно гудеть и греться, давление скачет. По нашему договору на обслуживание просим прислать мастера на диагностику, желательно в ближайшие дни.\n\nОлег Карпов, «Орион»"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "513cb12b9eb102be": "OUT-1"
+  }
+}

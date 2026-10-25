@@ -1,0 +1,42 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792933455.617,
+      "message_id": "mail-13",
+      "reason": "Договор не найден, но требуется его наличие для маршрутизации. Передаю дежурному сотруднику.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792933448.992,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    },
+    {
+      "ts": 1792933453.079,
+      "action": "forward_message",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "ea180379eb3dfba3": "HUM-1"
+  }
+}

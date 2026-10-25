@@ -1,0 +1,44 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792935962.11,
+      "message_id": "mail-09",
+      "reason": "Не удалось определить статус заказа O-52: информация отсутствует в системе.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792935955.092,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket: create_ticket только для технических обращений (engineers_group, support_general). Для роли order_operations используй forward_message",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792935958.408,
+      "action": "forward_message",
+      "reason": "order_not_observed: заказ O-52 не получен — сначала вызови get_order(order_id='O-52')",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "66dedbfe2a4ef25a": "HUM-1"
+  }
+}

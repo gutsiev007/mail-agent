@@ -1,0 +1,57 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792932784.63,
+      "kind": "forward",
+      "to": "support@company.test",
+      "delivery": "delivered",
+      "recipient_role": "support_general",
+      "ref": "D-21",
+      "message_id": "mail-12",
+      "note": "Передаю обращение по обычному договору в поддержку.",
+      "basis": {
+        "contract_id": "D-21",
+        "customer_id": "C-21"
+      },
+      "original": {
+        "message_id": "mail-12",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Сканер",
+        "body": "Сканер штрихкодов на кассе перестал распознавать коды. Что делать?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792932776.493,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1792932781.426,
+      "action": "create_ticket",
+      "reason": "rule_mismatch: обычный пакет → support_general",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "contract_id": "D-21",
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "4b19aa3d2ec9992f": "OUT-1"
+  }
+}

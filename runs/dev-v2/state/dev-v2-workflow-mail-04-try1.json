@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1792935729.937,
+      "ticket_id": "T-9",
+      "message_id": "mail-04",
+      "note": "Проблема снова появилась. Это продолжение T-9, вчера обсуждали с Сергеем",
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "652ee1149c6a77c1": "UPD-1"
+  }
+}

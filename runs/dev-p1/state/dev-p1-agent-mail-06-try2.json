@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792932550.514,
+      "message_id": "mail-06",
+      "reason": "Не удалось определить клиента по email.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "b6a19c2475f7499c": "HUM-1"
+  }
+}

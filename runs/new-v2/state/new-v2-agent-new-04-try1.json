@@ -1,0 +1,31 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792936399.267,
+      "message_id": "new-04",
+      "reason": "Для клиента C-31 отсутствуют действующие договоры, что затрудняет маршрутизацию обращения.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792936395.408,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли engineers_group укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "3755f0547d4b972c": "HUM-1"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792935646.866,
+      "kind": "forward",
+      "to": "logistics@company.test",
+      "delivery": "delivered",
+      "recipient_role": "logistics",
+      "ref": "O-52",
+      "message_id": "mail-02-shipped",
+      "note": "Заказ O-52 деньги ушли неделю назад. Когда получим оборудование?",
+      "basis": {
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "mail-02-shipped",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Заказ O-52",
+        "body": "По заказу O-52 деньги ушли неделю назад. Когда получим оборудование?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "53cb10852add067a": "OUT-1"
+  }
+}

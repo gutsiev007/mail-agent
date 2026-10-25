@@ -1,0 +1,69 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933567.944,
+      "kind": "clarification",
+      "to": "anna@vektor-sever.test",
+      "delivery": "delivered",
+      "message_id": "new-02",
+      "question": "Какой договор относится к этому запросу?",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792933557.298,
+      "status": "open",
+      "customer_id": "C-11",
+      "contract_id": "D-11",
+      "recipient_role": "engineers_group",
+      "assignee": "Север",
+      "assignee_address": "engineers-sever@company.test",
+      "summary": "Ошибка контроллера E-47 на насосной станции, запрос на специалиста для диагностики и устранения проблемы",
+      "message_id": "new-02"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792933559.648,
+      "action": "append_to_ticket",
+      "reason": "ticket_not_observed: заявка не получена find_tickets",
+      "args": {
+        "ticket_id": "T-NEW-1"
+      }
+    },
+    {
+      "ts": 1792933562.788,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-11",
+          "order_id": "O-51"
+        }
+      }
+    },
+    {
+      "ts": 1792933566.097,
+      "action": "forward_message",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-11",
+          "order_id": "O-51"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "a80e58aa12f0529d": "T-NEW-1",
+    "15bc82431b78b0cd": "OUT-1"
+  }
+}

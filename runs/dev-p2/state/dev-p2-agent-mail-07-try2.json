@@ -1,0 +1,83 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933131.086,
+      "kind": "clarification",
+      "to": "oleg@orion.test",
+      "delivery": "delivered",
+      "message_id": "mail-07",
+      "question": "Почему заказ O-52 не отправлен? И почему у клиента нет действующего расширенного договора для получения новых комплектов?",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792933112.534,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792933117.06,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792933120.779,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792933124.497,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792933128.316,
+      "action": "forward_message",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "db071cd74fcce677": "OUT-1"
+  }
+}

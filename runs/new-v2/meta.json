@@ -1,0 +1,42 @@
+{
+  "batch": "new-v2",
+  "modes": [
+    "workflow",
+    "agent"
+  ],
+  "trials": 3,
+  "prompt_version": "p2",
+  "config": {
+    "name": "local-qwen2.5-7b",
+    "_why": "Локальная бесплатная модель через Ollama, одна для обоих режимов: так сравнение показывает разницу архитектур, а не моделей.",
+    "agent": {
+      "provider": "openai_compat",
+      "model": "qwen2.5:7b-instruct",
+      "base_url": "http://localhost:11434/v1",
+      "max_tokens": 1024,
+      "temperature": 0.2
+    },
+    "extractor": {
+      "provider": "openai_compat",
+      "model": "qwen2.5:7b-instruct",
+      "base_url": "http://localhost:11434/v1",
+      "max_tokens": 800,
+      "temperature": 0
+    },
+    "limits": {
+      "max_steps": 10,
+      "max_seconds": 300
+    }
+  },
+  "tools_version": "t2",
+  "code_version": "9e468f6674",
+  "dataset_version": "2c5035801a",
+  "cases": [
+    "new-01",
+    "new-02",
+    "new-03",
+    "new-04",
+    "new-05"
+  ],
+  "started": "2026-10-25 16:50:46"
+}

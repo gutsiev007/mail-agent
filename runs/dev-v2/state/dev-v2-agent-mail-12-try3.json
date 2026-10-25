@@ -1,0 +1,57 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792936140.656,
+      "kind": "forward",
+      "to": "support@company.test",
+      "delivery": "delivered",
+      "recipient_role": "support_general",
+      "ref": "D-21",
+      "message_id": "mail-12",
+      "note": "Передаю обращение по технической проблеме с кассовым сканером для клиента с действующим обычным договором.",
+      "basis": {
+        "contract_id": "D-21",
+        "customer_id": "C-21"
+      },
+      "original": {
+        "message_id": "mail-12",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Сканер",
+        "body": "Сканер штрихкодов на кассе перестал распознавать коды. Что делать?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792936131.969,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли engineers_group укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1792936136.785,
+      "action": "create_ticket",
+      "reason": "rule_mismatch: обычный пакет → support_general",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "contract_id": "D-21",
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "4b19aa3d2ec9992f": "OUT-1"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792936353.04,
+      "kind": "clarification",
+      "to": "anna.l.work@gmail.com",
+      "delivery": "delivered",
+      "message_id": "new-03",
+      "question": "Не удалось однозначно определить вашу компанию. Укажите, пожалуйста, название организации и номер договора или заказа; если пишете с нового адреса — подтвердите его через контакт, указанный в договоре.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "889cbedba5467cf8": "OUT-1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1792932828.964,
+      "ticket_id": "T-9",
+      "message_id": "mail-14",
+      "note": "На складе перестал включаться терминал сбора данных",
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "1f50fb0b717198e3": "UPD-1"
+  }
+}

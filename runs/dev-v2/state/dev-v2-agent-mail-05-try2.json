@@ -1,0 +1,45 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792935781.086,
+      "kind": "forward",
+      "to": "sales@company.test",
+      "delivery": "delivered",
+      "recipient_role": "sales",
+      "ref": null,
+      "message_id": "mail-05",
+      "note": "Передаём письмо отделу продаж для продолжения обсуждения вариантов.",
+      "basis": {
+        "customer_id": "C-11"
+      },
+      "original": {
+        "message_id": "mail-05",
+        "thread_id": "th-05",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна",
+        "subject": "Re: варианты",
+        "body": "Согласны на второй вариант. Запускайте"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792935778.125,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket: create_ticket только для технических обращений (engineers_group, support_general). Для роли sales используй forward_message",
+      "args": {
+        "recipient_role": "sales",
+        "basis": {
+          "customer_id": "C-11"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "b9446c72d4caa12b": "OUT-1"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792933045.29,
+      "message_id": "mail-05",
+      "reason": "Неверная роль для создания заявки в отдел продаж.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792933043.398,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket",
+      "args": {
+        "recipient_role": "sales",
+        "basis": {
+          "customer_id": "C-11"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "abba2298044b6203": "HUM-1"
+  }
+}

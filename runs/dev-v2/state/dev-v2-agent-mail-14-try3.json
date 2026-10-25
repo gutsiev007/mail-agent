@@ -1,0 +1,54 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1792936244.25,
+      "ticket_id": "T-9",
+      "message_id": "mail-14",
+      "note": "Добавляю сообщение о проблеме с терминалом сбора данных на складе.",
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792936233.753,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли engineers_group укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    },
+    {
+      "ts": 1792936237.969,
+      "action": "forward_message",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    },
+    {
+      "ts": 1792936241.589,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли engineers_group укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-31",
+          "ticket_id": "T-9"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "1f50fb0b717198e3": "UPD-1"
+  }
+}

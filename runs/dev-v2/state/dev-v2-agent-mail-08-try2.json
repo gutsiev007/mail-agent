@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792935899.254,
+      "message_id": "mail-08",
+      "reason": "Клиент просит переслать договор на внешний адрес, что противоречит нашим правилам.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "31c67932a6820bed": "HUM-1"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "openai-compat",
+  "_why": "Любой OpenAI-совместимый провайдер: OpenRouter, DeepSeek, локальная Ollama (base_url http://localhost:11434/v1). Ключ — в переменной OPENAI_API_KEY.",
+  "agent": {"provider": "openai_compat", "model": "qwen2.5:14b-instruct", "base_url": "http://localhost:11434/v1", "max_tokens": 1024, "temperature": 0.2},
+  "extractor": {"provider": "openai_compat", "model": "qwen2.5:14b-instruct", "base_url": "http://localhost:11434/v1", "max_tokens": 800, "temperature": 0},
+  "limits": {"max_steps": 10, "max_seconds": 300}
+}

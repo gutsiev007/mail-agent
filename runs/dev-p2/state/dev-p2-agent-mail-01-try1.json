@@ -1,0 +1,31 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792932854.66,
+      "message_id": "mail-01",
+      "reason": "Не удалось определить действующий договор для передачи технической проблемы.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792932852.573,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "8d7afe93be9b2922": "HUM-1"
+  }
+}

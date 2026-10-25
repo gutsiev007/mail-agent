@@ -1,0 +1,35 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792936121.658,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": "Общая поддержка",
+      "assignee_address": "support@company.test",
+      "summary": "Сканер штрихкодов на кассе перестал распознавать коды. Что делать?",
+      "message_id": "mail-12"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792936117.054,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: D-21 (standard, active). Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "c7906d28f3e5babd": "T-NEW-1"
+  }
+}

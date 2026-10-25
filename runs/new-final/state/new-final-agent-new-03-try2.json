@@ -1,0 +1,33 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792933663.858,
+      "message_id": "new-03",
+      "reason": "отправитель не подтверждён через find_customer(email)",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792933661.977,
+      "action": "create_ticket",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "contract_id": null,
+          "customer_id": "C-11",
+          "order_id": null
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "404c2f2b5d368c6c": "HUM-1"
+  }
+}

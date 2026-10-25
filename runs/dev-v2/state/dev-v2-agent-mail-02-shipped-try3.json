@@ -1,0 +1,46 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792935681.433,
+      "kind": "forward",
+      "to": "logistics@company.test",
+      "delivery": "delivered",
+      "recipient_role": "logistics",
+      "ref": "O-52",
+      "message_id": "mail-02-shipped",
+      "note": "Обращение о задержке заказа O-52 передаю в логистику.",
+      "basis": {
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "mail-02-shipped",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Заказ O-52",
+        "body": "По заказу O-52 деньги ушли неделю назад. Когда получим оборудование?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792935677.971,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket: create_ticket только для технических обращений (engineers_group, support_general). Для роли logistics используй forward_message",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "53cb10852add067a": "OUT-1"
+  }
+}

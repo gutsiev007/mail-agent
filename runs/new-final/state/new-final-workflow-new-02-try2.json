@@ -1,0 +1,36 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933543.72,
+      "kind": "clarification",
+      "to": "anna@vektor-sever.test",
+      "delivery": "delivered",
+      "message_id": "new-02",
+      "question": "Укажите, пожалуйста, номер заказа.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792933543.72,
+      "status": "open",
+      "customer_id": "C-11",
+      "contract_id": "D-11",
+      "recipient_role": "engineers_group",
+      "assignee": "Север",
+      "assignee_address": "engineers-sever@company.test",
+      "summary": "Контроллер на насосной станции периодически уходит в перезагрузку и выдаёт ошибку E-47",
+      "message_id": "new-02"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "a80e58aa12f0529d": "T-NEW-1",
+    "15bc82431b78b0cd": "OUT-1"
+  }
+}

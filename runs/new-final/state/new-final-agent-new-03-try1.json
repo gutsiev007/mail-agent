@@ -1,0 +1,90 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933625.279,
+      "kind": "clarification",
+      "to": "anna.l.work@gmail.com",
+      "delivery": "delivered",
+      "message_id": "new-03",
+      "question": "Пожалуйста, уточните, к какой компании относится обращение: Вектор Север или Вектор Сервис.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792933633.655,
+      "action": "forward_message",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-11",
+          "customer_name": "Вектор Север"
+        }
+      }
+    },
+    {
+      "ts": 1792933639.035,
+      "action": "forward_message",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    },
+    {
+      "ts": 1792933643.797,
+      "action": "forward_message",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    },
+    {
+      "ts": 1792933648.358,
+      "action": "forward_message",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    },
+    {
+      "ts": 1792933652.737,
+      "action": "forward_message",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    },
+    {
+      "ts": 1792933657.547,
+      "action": "forward_message",
+      "reason": "sender_not_verified: отправитель не подтверждён через find_customer(email)",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "889cbedba5467cf8": "OUT-1"
+  }
+}

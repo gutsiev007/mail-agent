@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933522.998,
+      "kind": "forward",
+      "to": "orders@company.test",
+      "delivery": "delivered",
+      "recipient_role": "order_operations",
+      "ref": "O-52",
+      "message_id": "new-01",
+      "note": "Заказ O-52 не отгружен, передаю в отдел операций по заказам для проверки и уведомления клиента о текущем статусе.",
+      "basis": {
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "new-01",
+        "from": "oleg@orion.test",
+        "from_name": "Олег Карпов",
+        "subject": "Когда отправите O-52?",
+        "body": "Добрый день!\n\nОплату по заказу O-52 мы провели ещё на прошлой неделе, а трек-номера до сих пор нет. Подскажите, пожалуйста, на каком этапе заказ и когда примерно его отгрузят? Нам важно понять сроки, чтобы спланировать монтаж.\n\nСпасибо,\nОлег, «Орион»"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "dcd0a4aa9ee50878": "OUT-1"
+  }
+}

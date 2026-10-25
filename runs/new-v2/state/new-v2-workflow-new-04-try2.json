@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1792936386.323,
+      "ticket_id": "T-9",
+      "message_id": "new-04",
+      "note": "Принтер печатает этикетки с ошибками на второй линии",
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "0cb9f328dae1681e": "UPD-1"
+  }
+}

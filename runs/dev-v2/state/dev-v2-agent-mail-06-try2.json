@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792935809.141,
+      "kind": "clarification",
+      "to": "service@vektor-group.test",
+      "delivery": "delivered",
+      "message_id": "mail-06",
+      "question": "Кто является отправителем этого письма?",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "460a6bc2f066923f": "OUT-1"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "openrouter-claude",
+  "_why": "Через OpenRouter (работает из РФ). Агент: Sonnet — многошаговый выбор инструментов. Workflow: Haiku — одно извлечение, дешевле.",
+  "agent": {"provider": "openai_compat", "model": "anthropic/claude-sonnet-4.6", "base_url": "https://openrouter.ai/api/v1", "api_key_env": "OPENROUTER_API_KEY", "max_tokens": 1024},
+  "extractor": {"provider": "openai_compat", "model": "anthropic/claude-haiku-4.5", "base_url": "https://openrouter.ai/api/v1", "api_key_env": "OPENROUTER_API_KEY", "max_tokens": 800},
+  "limits": {"max_steps": 10, "max_seconds": 180}
+}

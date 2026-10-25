@@ -1,0 +1,42 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792932878.537,
+      "message_id": "mail-01",
+      "reason": "Не удалось определить статус договора для передачи обращения.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792932873.53,
+      "action": "create_ticket",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    },
+    {
+      "ts": 1792932876.517,
+      "action": "forward_message",
+      "reason": "contract_not_observed: договор не получен get_contracts в этой обработке",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-12"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "8d7afe93be9b2922": "HUM-1"
+  }
+}

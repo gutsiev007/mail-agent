@@ -1,0 +1,46 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792932981.868,
+      "kind": "forward",
+      "to": "logistics@company.test",
+      "delivery": "delivered",
+      "recipient_role": "logistics",
+      "ref": "O-51",
+      "message_id": "mail-03",
+      "note": "Передаю запрос о местоположении груза по заказу O-51 ответственному за логистику.",
+      "basis": {
+        "customer_id": "C-11",
+        "order_id": "O-51"
+      },
+      "original": {
+        "message_id": "mail-03",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна",
+        "subject": "Где груз",
+        "body": "По O-51 всё ещё ничего не приехало. Можно узнать, где груз?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792932978.003,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-11",
+          "order_id": "O-51"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "1461720935ec27fe": "OUT-1"
+  }
+}

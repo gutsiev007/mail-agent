@@ -1,0 +1,61 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792935841.914,
+      "kind": "forward",
+      "to": "support@company.test",
+      "delivery": "delivered",
+      "recipient_role": "support_general",
+      "ref": "D-21",
+      "message_id": "mail-07",
+      "note": "Передаю письмо в поддержку для разрешения вопроса о заказе O-52 и запроса пяти новых комплектов.",
+      "basis": {
+        "contract_id": "D-21",
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "mail-07",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Комплекты и O-52",
+        "body": "Нужно ещё пять комплектов, и объясните, почему O-52 не отправлен"
+      }
+    }
+  ],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792935837.499,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": "Общая поддержка",
+      "assignee_address": "support@company.test",
+      "summary": "Заказ O-52 не отправлен, требуется объяснение и заказ пяти новых комплектов",
+      "message_id": "mail-07"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792935832.251,
+      "action": "create_ticket",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "3297fbcace6e6f97": "T-NEW-1",
+    "0be727836cdebfeb": "OUT-1"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "claude-same-sonnet",
+  "_why": "Контрольный запуск: одна модель в обоих режимах, чтобы отделить влияние архитектуры от модели.",
+  "agent": {"provider": "anthropic", "model": "claude-sonnet-5-5", "max_tokens": 1024, "temperature": null},
+  "extractor": {"provider": "anthropic", "model": "claude-sonnet-5-5", "max_tokens": 800, "temperature": null},
+  "limits": {"max_steps": 10, "max_seconds": 180}
+}

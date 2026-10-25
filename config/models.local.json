@@ -1,0 +1,7 @@
+{
+  "name": "local-qwen2.5-7b",
+  "_why": "Локальная бесплатная модель через Ollama, одна для обоих режимов: так сравнение показывает разницу архитектур, а не моделей.",
+  "agent": {"provider": "openai_compat", "model": "qwen2.5:7b-instruct", "base_url": "http://localhost:11434/v1", "max_tokens": 1024, "temperature": 0.2},
+  "extractor": {"provider": "openai_compat", "model": "qwen2.5:7b-instruct", "base_url": "http://localhost:11434/v1", "max_tokens": 800, "temperature": 0},
+  "limits": {"max_steps": 10, "max_seconds": 300}
+}

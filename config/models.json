@@ -1,0 +1,7 @@
+{
+  "name": "claude-mixed-v1",
+  "_why": "Агент: Sonnet — многошаговый выбор инструментов. Workflow: Haiku — одно структурированное извлечение, дешевле и быстрее.",
+  "agent": {"provider": "anthropic", "model": "claude-sonnet-5-5", "max_tokens": 1024, "temperature": null},
+  "extractor": {"provider": "anthropic", "model": "claude-haiku-5-5", "max_tokens": 800, "temperature": null},
+  "limits": {"max_steps": 10, "max_seconds": 180}
+}

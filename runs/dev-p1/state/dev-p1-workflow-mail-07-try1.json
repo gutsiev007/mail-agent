@@ -1,0 +1,44 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792932564.443,
+      "kind": "forward",
+      "to": "sales@company.test",
+      "delivery": "delivered",
+      "recipient_role": "sales",
+      "ref": null,
+      "message_id": "mail-07",
+      "note": "Нужно ещё пять комплектов",
+      "basis": {
+        "customer_id": "C-21"
+      },
+      "original": {
+        "message_id": "mail-07",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Комплекты и O-52",
+        "body": "Нужно ещё пять комплектов, и объясните, почему O-52 не отправлен"
+      }
+    },
+    {
+      "id": "OUT-2",
+      "ts": 1792932564.444,
+      "kind": "clarification",
+      "to": "oleg@orion.test",
+      "delivery": "delivered",
+      "message_id": "mail-07",
+      "question": "Укажите, пожалуйста, номер заказа.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "7a7377a2d2d3594b": "OUT-1",
+    "db071cd74fcce677": "OUT-2"
+  }
+}

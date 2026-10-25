@@ -1,0 +1,47 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792933303.511,
+      "kind": "forward",
+      "to": "engineers-sever@company.test",
+      "delivery": "delivered",
+      "recipient_role": "engineers_group",
+      "ref": "D-11",
+      "message_id": "mail-11",
+      "note": "Передаю обращение о проблеме с терминалами инженерам.",
+      "basis": {
+        "contract_id": "D-11",
+        "customer_id": "C-11"
+      },
+      "original": {
+        "message_id": "mail-11",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна",
+        "subject": "Терминалы на складе",
+        "body": "Терминалы на складе перестали включаться после перезагрузки. Нужна помощь инженеров."
+      }
+    }
+  ],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792933300.032,
+      "status": "open",
+      "customer_id": "C-11",
+      "contract_id": "D-11",
+      "recipient_role": "engineers_group",
+      "assignee": "Север",
+      "assignee_address": "engineers-sever@company.test",
+      "summary": "Терминалы на складе перестали включаться после перезагрузки. Нужна помощь инженеров.",
+      "message_id": "mail-11"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "db29b01b61cf56e9": "T-NEW-1",
+    "1c5aff9bb8251e97": "OUT-1"
+  }
+}

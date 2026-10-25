@@ -1,0 +1,31 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1792932652.421,
+      "message_id": "mail-09",
+      "reason": "Заказ O-52 не найден, но клиент утверждает, что он оплачен.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1792932650.186,
+      "action": "forward_message",
+      "reason": "order_not_observed: заказ не получен get_order в этой обработке",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "66dedbfe2a4ef25a": "HUM-1"
+  }
+}

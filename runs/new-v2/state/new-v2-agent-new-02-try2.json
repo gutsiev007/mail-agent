@@ -1,0 +1,56 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792936327.908,
+      "kind": "forward",
+      "to": "logistics@company.test",
+      "delivery": "delivered",
+      "recipient_role": "logistics",
+      "ref": "O-51",
+      "message_id": "new-02",
+      "note": "Уточнение по заказу O-51: уточнение о доставке",
+      "basis": {
+        "customer_id": "C-11",
+        "order_id": "O-51"
+      },
+      "original": {
+        "message_id": "new-02",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна Лебедева",
+        "subject": "Ошибка контроллера + вопрос по доставке",
+        "body": "Здравствуйте!\n\nУ меня два вопроса сразу.\n\n1) Со вчерашнего вечера контроллер на насосной станции периодически уходит в перезагрузку и выдаёт ошибку E-47. Сбрасывали питание, но через пару часов всё повторяется. Просим прислать специалиста или хотя бы подсказать, что проверить.\n\n2) По заказу O-51: нам сообщили, что он уже у транспортной компании. Можно узнать, когда ориентировочно привезут и кто перевозчик?\n\nЗаранее спасибо,\nАнна, «Вектор Север»"
+      }
+    }
+  ],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1792936321.971,
+      "status": "open",
+      "customer_id": "C-11",
+      "contract_id": "D-11",
+      "recipient_role": "engineers_group",
+      "assignee": "Север",
+      "assignee_address": "engineers-sever@company.test",
+      "summary": "Ошибка контроллера E-47 на насосной станции, запрос на специалиста для диагностики и устранения проблемы",
+      "message_id": "new-02"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792936324.544,
+      "action": "append_to_ticket",
+      "reason": "ticket_not_observed: заявка не получена find_tickets",
+      "args": {
+        "ticket_id": "T-NEW-1"
+      }
+    }
+  ],
+  "idempotency": {
+    "a80e58aa12f0529d": "T-NEW-1",
+    "59bac632d7b1353a": "OUT-1"
+  }
+}

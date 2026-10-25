@@ -1,0 +1,70 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1792936006.14,
+      "kind": "forward",
+      "to": "orders@company.test",
+      "delivery": "delivered",
+      "recipient_role": "order_operations",
+      "ref": "O-52",
+      "message_id": "mail-10",
+      "note": "Передаю заявку на обработку заказа O-52",
+      "basis": {
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "mail-10",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "O-52",
+        "body": "Добрый день! Когда отгрузите O-52?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1792935996.176,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket: create_ticket только для технических обращений (engineers_group, support_general). Для роли logistics используй forward_message",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792935999.288,
+      "action": "forward_message",
+      "reason": "rule_mismatch: shipping_status=not_shipped → order_operations",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1792936003.396,
+      "action": "create_ticket",
+      "reason": "role_not_allowed_for_ticket: create_ticket только для технических обращений (engineers_group, support_general). Для роли order_operations используй forward_message",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "1c99460859048d3e": "OUT-1"
+  }
+}
