@@ -1,12 +1,27 @@
 {
-  "_comment": "Учебный стенд. Все адреса — в домене .test, отправка только в локальный outbox.",
+  "_comment": "Учебный стенд. Все адреса — в домене .test, отправка только в локальный outbox. Исполнитель заявки — {kind: staff|group|queue, id}; адрес разрешается при уведомлении.",
   "company_domain": "company.test",
   "directory": {
-    "order_operations": {"name": "Обработка заказов", "address": "orders@company.test"},
-    "logistics": {"name": "Логистика", "address": "logistics@company.test"},
-    "support_general": {"name": "Общая поддержка", "address": "support@company.test"},
-    "sales": {"name": "Отдел продаж", "address": "sales@company.test"},
-    "human_triage": {"name": "Дежурный сотрудник", "address": "triage@company.test"}
+    "order_operations": {
+      "name": "Обработка заказов",
+      "address": "orders@company.test"
+    },
+    "logistics": {
+      "name": "Логистика",
+      "address": "logistics@company.test"
+    },
+    "support_general": {
+      "name": "Общая поддержка",
+      "address": "support@company.test"
+    },
+    "sales": {
+      "name": "Отдел продаж",
+      "address": "sales@company.test"
+    },
+    "human_triage": {
+      "name": "Дежурный сотрудник",
+      "address": "triage@company.test"
+    }
   },
   "staff": {
     "Марина": "marina@company.test",
@@ -16,33 +31,121 @@
     "Север": "engineers-sever@company.test"
   },
   "customers": {
-    "C-11": {"name": "Вектор Север", "contacts": [{"name": "Анна Ковалёва", "email": "anna@vektor-sever.test"}]},
-    "C-12": {"name": "Вектор Сервис", "contacts": [{"name": "Анна Смирнова", "email": "anna@vektor-servis.test"}]},
-    "C-21": {"name": "Орион", "contacts": [{"name": "Олег Петров", "email": "oleg@orion.test"}]},
-    "C-31": {"name": "Маяк", "contacts": [{"name": "Ирина Белова", "email": "irina@mayak.test"}]}
+    "C-11": {
+      "name": "Вектор Север",
+      "contacts": [
+        {
+          "name": "Анна Ковалёва",
+          "email": "anna@vektor-sever.test"
+        }
+      ]
+    },
+    "C-12": {
+      "name": "Вектор Сервис",
+      "contacts": [
+        {
+          "name": "Анна Смирнова",
+          "email": "anna@vektor-servis.test"
+        }
+      ]
+    },
+    "C-21": {
+      "name": "Орион",
+      "contacts": [
+        {
+          "name": "Олег Петров",
+          "email": "oleg@orion.test"
+        }
+      ]
+    },
+    "C-31": {
+      "name": "Маяк",
+      "contacts": [
+        {
+          "name": "Ирина Белова",
+          "email": "irina@mayak.test"
+        }
+      ]
+    }
   },
   "contracts": {
-    "D-11": {"customer_id": "C-11", "package": "extended", "service_status": "active", "service_until": "2027-06-30", "engineer_group": "Север", "responsible": "Марина"},
-    "D-12": {"customer_id": "C-12", "package": "standard", "service_status": "expired", "service_until": "2026-09-30", "engineer_group": null, "responsible": "Марина"},
-    "D-21": {"customer_id": "C-21", "package": "standard", "service_status": "active", "service_until": "2027-03-31", "engineer_group": null, "responsible": "Марина"}
+    "D-11": {
+      "customer_id": "C-11",
+      "package": "extended",
+      "service_status": "active",
+      "service_until": "2027-06-30",
+      "engineer_group": "Север",
+      "responsible": "Марина"
+    },
+    "D-12": {
+      "customer_id": "C-12",
+      "package": "standard",
+      "service_status": "expired",
+      "service_until": "2026-09-30",
+      "engineer_group": null,
+      "responsible": "Марина"
+    },
+    "D-21": {
+      "customer_id": "C-21",
+      "package": "standard",
+      "service_status": "active",
+      "service_until": "2027-03-31",
+      "engineer_group": null,
+      "responsible": "Марина"
+    }
   },
   "orders": {
-    "O-51": {"customer_id": "C-11", "payment_status": "paid", "shipping_status": "handed_to_carrier", "carrier": "ТК Пэк"},
-    "O-52": {"customer_id": "C-21", "payment_status": "paid", "shipping_status": "not_shipped", "carrier": null}
+    "O-51": {
+      "customer_id": "C-11",
+      "payment_status": "paid",
+      "shipping_status": "handed_to_carrier",
+      "carrier": "ТК Пэк"
+    },
+    "O-52": {
+      "customer_id": "C-21",
+      "payment_status": "paid",
+      "shipping_status": "not_shipped",
+      "carrier": null
+    }
   },
   "tickets": {
-    "T-9": {"customer_id": "C-31", "status": "open", "assignee": "Сергей", "subject": "Сбой печати этикеток на линии 2", "last_update": "2026-10-20"}
+    "T-9": {
+      "customer_id": "C-31",
+      "status": "open",
+      "assignee": {
+        "kind": "staff",
+        "id": "Сергей"
+      },
+      "subject": "Сбой печати этикеток на линии 2",
+      "last_update": "2026-10-20"
+    }
   },
   "threads": {
     "th-01": [
-      {"date": "2026-10-10", "from": "anna@vektor-servis.test", "text": "Добрый день. Напоминаю, что у нас договор D-12, терминалы на обслуживании по нему."}
+      {
+        "date": "2026-10-10",
+        "from": "anna@vektor-servis.test",
+        "text": "Добрый день. Напоминаю, что у нас договор D-12, терминалы на обслуживании по нему."
+      }
     ],
     "th-05": [
-      {"date": "2026-10-14", "from": "sales@company.test", "text": "Для Вектор Север (C-11) предлагаем два варианта: 1) три новых комплекта; 2) пять новых комплектов. Условия оплаты обсудим после выбора."},
-      {"date": "2026-10-15", "from": "anna@vektor-sever.test", "text": "Спасибо, обсудим внутри и вернёмся с ответом."}
+      {
+        "date": "2026-10-14",
+        "from": "sales@company.test",
+        "text": "Для Вектор Север (C-11) предлагаем два варианта: 1) три новых комплекта; 2) пять новых комплектов. Условия оплаты обсудим после выбора."
+      },
+      {
+        "date": "2026-10-15",
+        "from": "anna@vektor-sever.test",
+        "text": "Спасибо, обсудим внутри и вернёмся с ответом."
+      }
     ],
     "th-04": [
-      {"date": "2026-10-20", "from": "sergey@company.test", "text": "По T-9 перенастроили принтер на линии 2, проверьте, пожалуйста."}
+      {
+        "date": "2026-10-20",
+        "from": "sergey@company.test",
+        "text": "По T-9 перенастроили принтер на линии 2, проверьте, пожалуйста."
+      }
     ]
   }
 }

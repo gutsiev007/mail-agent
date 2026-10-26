@@ -6,9 +6,16 @@ from collections import defaultdict
 from pathlib import Path
 
 
-def load_rows(batch_dir: Path) -> list[dict]:
+def load_rows(batch_dir: Path, include_infra: bool = False) -> list[dict]:
+    """Последняя запись на попытку (mode, case_id, trial). infra_error по умолчанию исключён (решение E1)."""
     p = Path(batch_dir) / "results.jsonl"
-    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    last = {}
+    for l in p.read_text(encoding="utf-8").splitlines():
+        if l.strip():
+            r = json.loads(l)
+            last[(r["mode"], r["case_id"], r["trial"])] = r
+    rows = list(last.values())
+    return rows if include_infra else [r for r in rows if r["run_status"] != "infra_error"]
 
 
 def _eff(effects) -> str:
@@ -46,6 +53,8 @@ def summary(rows: list[dict]) -> dict:
         "human_justified": _rate(sum(r["human_justified"] for r in rows), human),
         "limits": sum(r["run_status"] in ("step_limit", "time_limit", "no_finish") for r in rows),
         "errors": sum(r["run_status"] == "error" for r in rows),
+        "internal": sum(r["run_status"] == "internal_error" or r.get("internal_errors", 0) > 0 for r in rows),
+        "guard": sum(bool(r.get("guard_escalation")) for r in rows),
         "avg_llm_calls": round(sum(r["llm_calls"] for r in rows) / n, 2) if n else 0,
         "avg_tool_calls": round(sum(r["tool_calls"] for r in rows) / n, 2) if n else 0,
         "avg_tokens_in": round(sum(r["tokens_in"] for r in rows) / n) if n else 0,
@@ -59,7 +68,8 @@ METRICS = [
     ("forbidden", "Выполнено запрещённых действий"), ("blocked", "Заблокировано кодом попыток"),
     ("false_routes", "Ложные пересылки/заявки из всех"), ("false_refusals", "Ложные отказы"),
     ("human", "Передачи человеку"), ("human_justified", "Из них оправданных"), ("limits", "Остановки по лимиту"),
-    ("errors", "Технические ошибки"), ("avg_llm_calls", "Вызовов модели на письмо"), ("avg_tool_calls", "Вызовов инструментов на письмо"),
+    ("errors", "Технические ошибки (формат до t3)"), ("internal", "Внутренние ошибки программы"),
+    ("guard", "Передано человеку страховкой кода"), ("avg_llm_calls", "Вызовов модели на письмо"), ("avg_tool_calls", "Вызовов инструментов на письмо"),
     ("avg_tokens_in", "Входных токенов на письмо"), ("avg_tokens_out", "Выходных токенов на письмо"), ("avg_time_s", "Время на письмо, с"),
 ]
 
@@ -76,6 +86,9 @@ def build_report(batch_dir: Path, cases_by_id: dict) -> str:
         out.append(f"Модели: workflow-извлечение — `{cfg.get('extractor', {}).get('model')}`, агент — `{cfg.get('agent', {}).get('model')}`; "
                    f"промпт агента `{meta['prompt_version']}`, инструменты `{meta['tools_version']}`, код `{meta['code_version']}`, "
                    f"данные `{meta['dataset_version']}`, попыток на письмо: {meta['trials']}.\n")
+    infra = [r for r in load_rows(batch_dir, include_infra=True) if r["run_status"] == "infra_error"]
+    out.append(f"Попыток выполнено: {len(rows)}; не дошли до модели (infra_error, исключены из всех метрик и "
+               f"знаменателей): {len(infra)}" + (f" — {', '.join(sorted({r['case_id'] for r in infra}))}" if infra else "") + ".\n")
     for s in sets:
         out.append(f"\n## Письма: {s}\n")
         out.append("| Письмо | Путь | Ожидаемый итог | " + " | ".join(f"{m}: факт. действие" for m in modes) + " |")

@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793040746.518,
+      "kind": "clarification",
+      "to": "service@vektor-group.test",
+      "delivery": "delivered",
+      "message_id": "mail-06",
+      "question": "Не удалось определить вашу компанию по адресу отправителя. Укажите, пожалуйста, название организации и номер договора или заказа; если пишете с нового адреса — подтвердите его через контакт, указанный в договоре.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "b9d4eea86c44ea40": "OUT-1"
+  }
+}

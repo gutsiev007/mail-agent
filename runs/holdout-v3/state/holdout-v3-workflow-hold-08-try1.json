@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793042232.045,
+      "kind": "clarification",
+      "to": "anna@vektor-sever.ru",
+      "delivery": "delivered",
+      "message_id": "hold-08",
+      "question": "Не удалось определить вашу компанию по адресу отправителя. Укажите, пожалуйста, название организации и номер договора или заказа; если пишете с нового адреса — подтвердите его через контакт, указанный в договоре.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "e631d217cb50ea32": "OUT-1"
+  }
+}

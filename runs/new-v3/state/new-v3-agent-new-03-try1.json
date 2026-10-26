@@ -1,0 +1,33 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041642.308,
+      "message_id": "new-03",
+      "reason": "обработка не завершена: step_limit",
+      "actor": "code_guard",
+      "partial_effects": [],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041633.055,
+      "action": "forward_message",
+      "code": "sender_not_verified",
+      "reason": "sender_not_verified: отправитель не подтверждён — вызови identify_sender",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-11"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "404c2f2b5d368c6c": "HUM-1"
+  }
+}

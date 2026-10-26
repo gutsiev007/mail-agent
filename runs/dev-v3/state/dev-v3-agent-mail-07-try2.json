@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793040848.162,
+      "kind": "forward",
+      "to": "orders@company.test",
+      "delivery": "delivered",
+      "recipient_role": "order_operations",
+      "ref": "O-52",
+      "message_id": "mail-07",
+      "note": "Пересылаю запрос на отгрузку заказа O-52 и объяснение задержки",
+      "basis": {
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "mail-07",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Комплекты и O-52",
+        "body": "Нужно ещё пять комплектов, и объясните, почему O-52 не отправлен"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "89b7872dbf8d2bf3": "OUT-1"
+  }
+}

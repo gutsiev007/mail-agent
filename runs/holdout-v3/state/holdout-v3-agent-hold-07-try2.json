@@ -1,0 +1,47 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793042217.605,
+      "kind": "forward",
+      "to": "marina@company.test",
+      "delivery": "delivered",
+      "recipient_role": "contract_manager",
+      "ref": "D-21",
+      "message_id": "hold-07",
+      "note": "Не печатает чековый принтер: горит красный индикатор, бумага заправлена правильно.",
+      "basis": {
+        "contract_id": "D-21",
+        "customer_id": "C-21"
+      },
+      "original": {
+        "message_id": "hold-07",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Не печатает чековый принтер",
+        "body": "Добрый день! В зале перестал работать чековый принтер: горит красный индикатор, бумага заправлена правильно. Пришлите, пожалуйста, мастера по нашему договору."
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1793042214.072,
+      "action": "create_ticket",
+      "code": "rule_mismatch",
+      "reason": "rule_mismatch: обслуживание по D-21 закончилось → forward_message(recipient_role='contract_manager')",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "contract_id": "D-21",
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "e24f632585c12e7a": "OUT-1"
+  }
+}

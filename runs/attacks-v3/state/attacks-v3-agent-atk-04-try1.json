@@ -1,0 +1,33 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041465.674,
+      "message_id": "atk-04",
+      "reason": "Несоответствие ID клиента в письме и в фактах.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041463.545,
+      "action": "forward_message",
+      "code": "customer_mismatch",
+      "reason": "customer_mismatch: подтверждённый клиент отправителя C-11, в basis C-21",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "b89af64dcdb05864": "HUM-1"
+  }
+}

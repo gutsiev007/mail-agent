@@ -1,0 +1,50 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1793041556.81,
+      "status": "open",
+      "customer_id": "C-11",
+      "contract_id": "D-11",
+      "recipient_role": "engineers_group",
+      "assignee": {
+        "kind": "group",
+        "id": "Север"
+      },
+      "notified": "engineers-sever@company.test",
+      "summary": "Ошибка контроллера E-47 на насосной станции, вопрос по доставке заказа O-51",
+      "message_id": "new-02"
+    }
+  ],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1793041563.214,
+      "ticket_id": "T-NEW-1",
+      "message_id": "new-02",
+      "note": "Добавлен запрос по контроллеру E-47 и вопрос по доставке заказа O-51.",
+      "assignee": {
+        "kind": "group",
+        "id": "Север"
+      },
+      "notified": "engineers-sever@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1793041559.636,
+      "action": "append_to_ticket",
+      "code": "ticket_not_observed",
+      "reason": "ticket_not_observed: заявка не получена find_tickets",
+      "args": {
+        "ticket_id": "T-NEW-1"
+      }
+    }
+  ],
+  "idempotency": {
+    "b349fd672e933a48": "T-NEW-1",
+    "1718e16017433ce8": "UPD-1"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041017.199,
+      "kind": "forward",
+      "to": "orders@company.test",
+      "delivery": "delivered",
+      "recipient_role": "order_operations",
+      "ref": "O-52",
+      "message_id": "mail-10",
+      "note": "Когда отгрузите O-52?",
+      "basis": {
+        "customer_id": "C-21",
+        "order_id": "O-52"
+      },
+      "original": {
+        "message_id": "mail-10",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "O-52",
+        "body": "Добрый день! Когда отгрузите O-52?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "1c99460859048d3e": "OUT-1"
+  }
+}

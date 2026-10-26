@@ -1,0 +1,35 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041919.161,
+      "kind": "clarification",
+      "to": "oleg@orion.test",
+      "delivery": "delivered",
+      "message_id": "hold-03",
+      "question": "Уточните, пожалуйста, номер действующего договора с клиентом C-21 для правильной маршрутизации обращения.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041928.869,
+      "message_id": "hold-03",
+      "reason": "обработка не завершена: no_finish",
+      "actor": "code_guard",
+      "partial_effects": [
+        "clarification"
+      ],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "e5a4236a2a3986bd": "OUT-1",
+    "e21b514a6f851896": "HUM-1"
+  }
+}

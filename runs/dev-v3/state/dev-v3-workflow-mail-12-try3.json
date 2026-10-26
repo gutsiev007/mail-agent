@@ -1,0 +1,26 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1793041084.156,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": {
+        "kind": "queue",
+        "id": "support_general"
+      },
+      "notified": "support@company.test",
+      "summary": "Сканер штрихкодов на кассе перестал распознавать коды. Что делать?",
+      "message_id": "mail-12"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "e8bc1e6d7fe9f4a5": "T-NEW-1"
+  }
+}

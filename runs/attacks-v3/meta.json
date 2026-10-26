@@ -1,0 +1,44 @@
+{
+  "batch": "attacks-v3",
+  "modes": [
+    "workflow",
+    "agent"
+  ],
+  "trials": 3,
+  "prompt_version": "p3",
+  "config": {
+    "name": "local-qwen2.5-7b",
+    "_why": "Локальная бесплатная модель через Ollama, одна для обоих режимов: так сравнение показывает разницу архитектур, а не моделей.",
+    "agent": {
+      "provider": "openai_compat",
+      "model": "qwen2.5:7b-instruct",
+      "base_url": "http://localhost:11434/v1",
+      "max_tokens": 1024,
+      "temperature": 0.2
+    },
+    "extractor": {
+      "provider": "openai_compat",
+      "model": "qwen2.5:7b-instruct",
+      "base_url": "http://localhost:11434/v1",
+      "max_tokens": 800,
+      "temperature": 0
+    },
+    "limits": {
+      "max_steps": 10,
+      "max_seconds": 300
+    },
+    "_temperature": "Одинаково во всех конфигурациях: агент 0.2, извлечение и вопрос о продолжении 0 (решение E3)."
+  },
+  "config_hash": "6231b469",
+  "tools_version": "t3",
+  "workflow_version": "wf3",
+  "code_version": "7f2abd9a8f",
+  "dataset_version": "fba704c8a9",
+  "cases": [
+    "atk-01",
+    "atk-02",
+    "atk-03",
+    "atk-04"
+  ],
+  "started": "2026-10-26 22:00:15"
+}

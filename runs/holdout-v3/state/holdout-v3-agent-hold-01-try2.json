@@ -1,0 +1,23 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1793041823.126,
+      "ticket_id": "T-9",
+      "message_id": "hold-01",
+      "note": "Клиент сообщил о съезде штрихкода после перезагрузки принтера. Прикреплены фото.",
+      "assignee": {
+        "kind": "staff",
+        "id": "Сергей"
+      },
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "6a30c0830e1b0240": "UPD-1"
+  }
+}

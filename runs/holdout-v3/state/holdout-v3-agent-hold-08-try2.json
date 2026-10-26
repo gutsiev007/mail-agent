@@ -1,0 +1,49 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793042261.268,
+      "kind": "clarification",
+      "to": "anna@vektor-sever.ru",
+      "delivery": "delivered",
+      "message_id": "hold-08",
+      "question": "Почему адрес отправителя не подтверждается, если компания Вектор Север уже найдена?",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793042340.782,
+      "message_id": "hold-08",
+      "reason": "обработка не завершена: no_finish",
+      "actor": "code_guard",
+      "partial_effects": [
+        "clarification"
+      ],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793042258.225,
+      "action": "forward_message",
+      "code": "sender_not_verified",
+      "reason": "sender_not_verified: отправитель не подтверждён — вызови identify_sender",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-11",
+          "order_id": "O-51"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "7a6a0e75e6e4dd78": "OUT-1",
+    "d4264d6b9a076fc8": "HUM-1"
+  }
+}

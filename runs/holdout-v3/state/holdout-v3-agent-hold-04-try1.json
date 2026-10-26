@@ -1,0 +1,36 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1793041986.732,
+      "ticket_id": "T-20",
+      "message_id": "hold-04",
+      "note": "Добавляем информацию о проблеме с ручным сканером на приёмке.",
+      "assignee": {
+        "kind": "queue",
+        "id": "support_general"
+      },
+      "notified": "support@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1793041979.85,
+      "action": "create_ticket",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "1488a042acf41165": "UPD-1"
+  }
+}

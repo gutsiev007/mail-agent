@@ -4,28 +4,29 @@
 
 ## Запуск
 
-Нужен только Python 3.10+ (внешних зависимостей нет).
+Нужен только Python 3.10+ (внешних зависимостей нет). Команды одинаковы на macOS, Linux и Windows (на Windows — `python` вместо `python3`).
 
 ```bash
 cd mail-agent
-python -m unittest discover -s tests -v      # проверка стенда, правил и оценки без API
-python -m mailagent validate                  # проверка файлов писем
+python3 -m unittest -v                         # 32 теста стенда, правил, клиента модели и оценки — без API
+python3 -m mailagent validate                  # проверка файлов писем
 
-# Anthropic
-export ANTHROPIC_API_KEY=...                  # Windows: set ANTHROPIC_API_KEY=...
-python -m mailagent run --mode both --set dev --trials 3 --prompt p1 --batch dev-p1
-
-# или любой OpenAI-совместимый (OpenRouter, DeepSeek, локальная Ollama)
-python -m mailagent run --mode both --set dev --config config/models.local.json --batch dev-local   # Ollama + qwen2.5:7b-instruct
+# локальная модель (бесплатно): установить Ollama, затем
+ollama pull qwen2.5:7b-instruct
+python3 -m mailagent suite                     # все прогоны версии: dev, attacks, new, holdout (по 3 попытки)
 ```
+
+Перед каждым прогоном выполняется проверочный вызов модели: если сервер не запущен, ключа нет или модель не найдена, прогон не начнётся. Прерванный прогон продолжается флагом `--resume` без дублей.
 
 Один сценарий и его проверка:
 
 ```bash
-python -m mailagent run --mode agent --cases mail-01 --batch demo1
-python -m mailagent show demo1-agent-mail-01-try1      # все обращения к модели и инструментам
-python -m mailagent effects demo1-agent-mail-01-try1   # созданная пересылка/заявка на стенде
+python3 -m mailagent run --mode agent --cases mail-01 --trials 1 --batch demo1
+python3 -m mailagent show demo1-agent-mail-01-try1      # все обращения к модели и инструментам
+python3 -m mailagent effects demo1-agent-mail-01-try1   # созданная пересылка/заявка на стенде
 ```
+
+Другие модели: `--config config/models.openrouter.json` (ключ `OPENROUTER_API_KEY`) или `config/models.json` (Anthropic, `ANTHROPIC_API_KEY`).
 
 Результаты: `runs/<batch>/trace.jsonl` (трасса), `results.jsonl` (оценка каждой попытки), `state/<run_id>.json` (состояние стенда), `report.md` (таблицы). Старые запуски не перезаписываются.
 
@@ -38,9 +39,11 @@ python -m mailagent effects demo1-agent-mail-01-try1   # созданная пе
 
 Конфигурации — `config/*.json`, ключи только в переменных окружения. Фактическая модель записывается в каждый `llm_call` трассы.
 
-## Итог в двух строках
+## Итог
 
-Workflow — **39/45** на разработческих и **15/15** на новых письмах, агент — 33/45 и 9/15 при той же модели, в 25 раз больше токенов и в 5 раз медленнее. Оставляю **workflow с одним узким шагом выбора моделью** (та же ли это проблема, что в открытой заявке). Подробно в [docs/results.md](docs/results.md), к защите — [docs/defense.md](docs/defense.md).
+Решения после ревью — [docs/decisions/](docs/decisions/README.md). Результаты версии 3 и выбор архитектуры — [docs/results.md](docs/results.md), к защите — [docs/defense.md](docs/defense.md).
+
+Число «15/15 на новых письмах» из версии 2 **отозвано**: эти письма были разобраны до исправлений и перестали быть новыми. Честная проверка — отложенный набор `cases/holdout.json`, составленный отдельно и запущенный один раз после фиксации версии.
 
 ## Документы
 

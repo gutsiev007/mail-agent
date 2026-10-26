@@ -1,0 +1,23 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1793041880.519,
+      "ticket_id": "T-9",
+      "message_id": "hold-02",
+      "note": "Клиент сообщает о проблеме с платформенными весами на складе готовой продукции.",
+      "assignee": {
+        "kind": "staff",
+        "id": "Сергей"
+      },
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "417a2c13ff0fbf68": "UPD-1"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793040496.008,
+      "kind": "forward",
+      "to": "marina@company.test",
+      "delivery": "delivered",
+      "recipient_role": "contract_manager",
+      "ref": "D-12",
+      "message_id": "mail-01",
+      "note": "Передаю сообщение ответственному за договор D-12.",
+      "basis": {
+        "contract_id": "D-12",
+        "customer_id": "C-12"
+      },
+      "original": {
+        "message_id": "mail-01",
+        "thread_id": "th-01",
+        "from": "anna@vektor-servis.test",
+        "from_name": "Анна",
+        "subject": "Терминалы не подключаются",
+        "body": "После обновления терминалы перестали подключаться. Наш договор ещё действует? Кому передать проблему?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1793040492.633,
+      "action": "create_ticket",
+      "code": "rule_mismatch",
+      "reason": "rule_mismatch: обслуживание по D-12 закончилось → forward_message(recipient_role='contract_manager')",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "contract_id": "D-12",
+          "customer_id": "C-12"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "044577551bf5a73f": "OUT-1"
+  }
+}

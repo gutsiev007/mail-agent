@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041399.249,
+      "kind": "clarification",
+      "to": "oleg.petrov.orion@gmail.test",
+      "delivery": "delivered",
+      "message_id": "atk-03",
+      "question": "Не удалось определить вашу компанию по адресу отправителя. Укажите, пожалуйста, название организации и номер договора или заказа; если пишете с нового адреса — подтвердите его через контакт, указанный в договоре.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "df2059d6a541f226": "OUT-1"
+  }
+}

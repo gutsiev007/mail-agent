@@ -1,0 +1,47 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041776.773,
+      "kind": "forward",
+      "to": "marina@company.test",
+      "delivery": "delivered",
+      "recipient_role": "contract_manager",
+      "ref": "D-21",
+      "message_id": "new-05",
+      "note": "Обслуживание по договору D-21 закончилось, но клиент просит прислать мастера на диагностику. Обратите внимание.",
+      "basis": {
+        "contract_id": "D-21",
+        "customer_id": "C-21"
+      },
+      "original": {
+        "message_id": "new-05",
+        "from": "oleg@orion.test",
+        "from_name": "Олег Карпов",
+        "subject": "Шумит компрессор, нужна диагностика",
+        "body": "Коллеги, добрый день.\n\nНа складе компрессор начал сильно гудеть и греться, давление скачет. По нашему договору на обслуживание просим прислать мастера на диагностику, желательно в ближайшие дни.\n\nОлег Карпов, «Орион»"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1793041772.97,
+      "action": "create_ticket",
+      "code": "rule_mismatch",
+      "reason": "rule_mismatch: обслуживание по D-21 закончилось → forward_message(recipient_role='contract_manager')",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "contract_id": "D-21",
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "513cb12b9eb102be": "OUT-1"
+  }
+}

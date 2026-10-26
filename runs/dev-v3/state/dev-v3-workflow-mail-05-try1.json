@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793040677.82,
+      "kind": "forward",
+      "to": "sales@company.test",
+      "delivery": "delivered",
+      "recipient_role": "sales",
+      "ref": null,
+      "message_id": "mail-05",
+      "note": "Согласны на второй вариант. Запускайте",
+      "basis": {
+        "customer_id": "C-11"
+      },
+      "original": {
+        "message_id": "mail-05",
+        "thread_id": "th-05",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна",
+        "subject": "Re: варианты",
+        "body": "Согласны на второй вариант. Запускайте"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "b9446c72d4caa12b": "OUT-1"
+  }
+}

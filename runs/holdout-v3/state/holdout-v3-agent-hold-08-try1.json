@@ -1,0 +1,33 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793042247.488,
+      "message_id": "hold-08",
+      "reason": "Адрес отправителя не подтверждён, требуется уточнение.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793042244.694,
+      "action": "forward_message",
+      "code": "sender_not_verified",
+      "reason": "sender_not_verified: отправитель не подтверждён — вызови identify_sender",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-11",
+          "order_id": "O-51"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "d4264d6b9a076fc8": "HUM-1"
+  }
+}

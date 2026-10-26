@@ -1,0 +1,26 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1793041899.624,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": {
+        "kind": "queue",
+        "id": "support_general"
+      },
+      "notified": "support@company.test",
+      "summary": "Касса во втором зале то включается, то гаснет, не печатает чеки",
+      "message_id": "hold-03"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "11ebcdc005609642": "T-NEW-1"
+  }
+}

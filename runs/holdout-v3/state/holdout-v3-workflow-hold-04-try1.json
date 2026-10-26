@@ -1,0 +1,26 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1793041964.498,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": {
+        "kind": "queue",
+        "id": "support_general"
+      },
+      "notified": "support@company.test",
+      "summary": "Ручной сканер на приёмке перестал читать штрихкоды",
+      "message_id": "hold-04"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "38e5425f0b668ba7": "T-NEW-1"
+  }
+}

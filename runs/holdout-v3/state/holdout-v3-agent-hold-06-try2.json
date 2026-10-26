@@ -1,0 +1,58 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793042166.973,
+      "message_id": "hold-06",
+      "reason": "Order O-213456 not found, cannot forward to order_operations.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793042152.477,
+      "action": "forward_message",
+      "code": "order_id_missing",
+      "reason": "order_id_missing: для роли order_operations укажи basis.order_id. Заказы, полученные в этой обработке: нет",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1793042156.748,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-213456 не получен — сначала вызови get_order(order_id='O-213456')",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-213456"
+        }
+      }
+    },
+    {
+      "ts": 1793042161.011,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-213456 не получен — сначала вызови get_order(order_id='O-213456')",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-213456"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "1067000050ad8390": "HUM-1"
+  }
+}

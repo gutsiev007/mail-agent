@@ -1,0 +1,23 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [
+    {
+      "id": "UPD-1",
+      "ts": 1793041141.387,
+      "ticket_id": "T-9",
+      "message_id": "mail-13",
+      "note": "Клиент сообщает, что проблема с печатью этикеток на линии 2 повторяется.",
+      "assignee": {
+        "kind": "staff",
+        "id": "Сергей"
+      },
+      "notified": "sergey@company.test"
+    }
+  ],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "2c469f957c6b5311": "UPD-1"
+  }
+}

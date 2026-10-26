@@ -1,0 +1,57 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041658.708,
+      "kind": "clarification",
+      "to": "anna.l.work@gmail.com",
+      "delivery": "delivered",
+      "message_id": "new-03",
+      "question": "Пожалуйста, укажите полное название вашей компании.",
+      "recipient_role": "sender",
+      "ref": null
+    },
+    {
+      "id": "OUT-2",
+      "ts": 1793041662.804,
+      "kind": "clarification",
+      "to": "anna.l.work@gmail.com",
+      "delivery": "delivered",
+      "message_id": "new-03",
+      "question": "Пожалуйста, уточните, к какому из ваших предприятий относится данное обращение: Вектор Север или Вектор Сервис?",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041667.709,
+      "message_id": "new-03",
+      "reason": "Не получено уточнения от клиента",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041652.924,
+      "action": "create_ticket",
+      "code": "sender_not_verified",
+      "reason": "sender_not_verified: отправитель не подтверждён — вызови identify_sender",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-11"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "ee1de6acc1676238": "OUT-1",
+    "578ca2800ff87245": "OUT-2",
+    "404c2f2b5d368c6c": "HUM-1"
+  }
+}

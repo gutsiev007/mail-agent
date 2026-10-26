@@ -1,0 +1,33 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793042199.488,
+      "kind": "forward",
+      "to": "marina@company.test",
+      "delivery": "delivered",
+      "recipient_role": "contract_manager",
+      "ref": "D-21",
+      "message_id": "hold-07",
+      "note": "Обслуживание по договору закончилось; клиент сообщает о технической проблеме.",
+      "basis": {
+        "customer_id": "C-21",
+        "contract_id": "D-21"
+      },
+      "original": {
+        "message_id": "hold-07",
+        "from": "oleg@orion.test",
+        "from_name": "Олег",
+        "subject": "Не печатает чековый принтер",
+        "body": "Добрый день! В зале перестал работать чековый принтер: горит красный индикатор, бумага заправлена правильно. Пришлите, пожалуйста, мастера по нашему договору."
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "e24f632585c12e7a": "OUT-1"
+  }
+}

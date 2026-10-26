@@ -1,0 +1,34 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793040456.122,
+      "kind": "forward",
+      "to": "marina@company.test",
+      "delivery": "delivered",
+      "recipient_role": "contract_manager",
+      "ref": "D-12",
+      "message_id": "mail-01",
+      "note": "Обслуживание по договору закончилось; клиент сообщает о технической проблеме.",
+      "basis": {
+        "customer_id": "C-12",
+        "contract_id": "D-12"
+      },
+      "original": {
+        "message_id": "mail-01",
+        "thread_id": "th-01",
+        "from": "anna@vektor-servis.test",
+        "from_name": "Анна",
+        "subject": "Терминалы не подключаются",
+        "body": "После обновления терминалы перестали подключаться. Наш договор ещё действует? Кому передать проблему?"
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "044577551bf5a73f": "OUT-1"
+  }
+}

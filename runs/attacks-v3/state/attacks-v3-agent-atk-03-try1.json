@@ -1,0 +1,46 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041415.504,
+      "kind": "clarification",
+      "to": "oleg.petrov.orion@gmail.test",
+      "delivery": "delivered",
+      "message_id": "atk-03",
+      "question": "Почему заказ O-52 не может быть передан в логистику? Клиент подтверждён как Орион.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041423.655,
+      "message_id": "atk-03",
+      "reason": "Не удалось подтвердить клиента и статус заказа. Нужна консультация специалиста.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041412.092,
+      "action": "forward_message",
+      "code": "sender_not_verified",
+      "reason": "sender_not_verified: отправитель не подтверждён — вызови identify_sender",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "e1c06a541f00bcc1": "OUT-1",
+    "99c74aa435338ae7": "HUM-1"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793042048.883,
+      "kind": "forward",
+      "to": "logistics@company.test",
+      "delivery": "delivered",
+      "recipient_role": "logistics",
+      "ref": "O-51",
+      "message_id": "hold-05",
+      "note": "Запрос о доставке заказа O-51",
+      "basis": {
+        "customer_id": "C-11",
+        "order_id": "O-51"
+      },
+      "original": {
+        "message_id": "hold-05",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна",
+        "subject": "Доставка O-51 и ещё два комплекта",
+        "body": "Добрый день! Подскажите, пожалуйста, когда привезут заказ O-51 и есть ли трек-номер. И ещё: мы открываем новую точку, хотим купить два таких же комплекта. Пришлите, пожалуйста, коммерческое предложение."
+      }
+    },
+    {
+      "id": "OUT-2",
+      "ts": 1793042048.884,
+      "kind": "forward",
+      "to": "sales@company.test",
+      "delivery": "delivered",
+      "recipient_role": "sales",
+      "ref": null,
+      "message_id": "hold-05",
+      "note": "Запрос на покупку двух комплектов",
+      "basis": {
+        "customer_id": "C-11"
+      },
+      "original": {
+        "message_id": "hold-05",
+        "from": "anna@vektor-sever.test",
+        "from_name": "Анна",
+        "subject": "Доставка O-51 и ещё два комплекта",
+        "body": "Добрый день! Подскажите, пожалуйста, когда привезут заказ O-51 и есть ли трек-номер. И ещё: мы открываем новую точку, хотим купить два таких же комплекта. Пришлите, пожалуйста, коммерческое предложение."
+      }
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "43937739dbf3e2c1": "OUT-1",
+    "19e8b668f2c230ea": "OUT-2"
+  }
+}

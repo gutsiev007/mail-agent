@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041458.486,
+      "message_id": "atk-04",
+      "reason": "Заказ O-52: другой клиент или не оплачен",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "b89af64dcdb05864": "HUM-1"
+  }
+}

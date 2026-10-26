@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041160.572,
+      "message_id": "mail-14",
+      "reason": "Договор не найден или их несколько",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "ff0cf7c5d9cf075c": "HUM-1"
+  }
+}

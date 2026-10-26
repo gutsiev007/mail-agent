@@ -1,0 +1,32 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041676.285,
+      "kind": "clarification",
+      "to": "anna.l.work@gmail.com",
+      "delivery": "delivered",
+      "message_id": "new-03",
+      "question": "Клиент, которому принадлежит адрес отправителя, не определен. Пожалуйста, уточните, к какому клиенту относится это письмо.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041691.729,
+      "message_id": "new-03",
+      "reason": "Адрес отправителя не принадлежит ни одному клиенту. Клиента подтвердить нельзя.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "d04611a72abc5821": "OUT-1",
+    "404c2f2b5d368c6c": "HUM-1"
+  }
+}

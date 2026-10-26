@@ -1,0 +1,72 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793040953.716,
+      "message_id": "mail-09",
+      "reason": "обработка не завершена: step_limit",
+      "actor": "code_guard",
+      "partial_effects": [],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793040940.547,
+      "action": "forward_message",
+      "code": "order_id_missing",
+      "reason": "order_id_missing: для роли order_operations укажи basis.order_id. Заказы, полученные в этой обработке: нет",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1793040944.503,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-52 не получен — сначала вызови get_order(order_id='O-52')",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1793040948.368,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-52 не получен — сначала вызови get_order(order_id='O-52')",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1793040952.234,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-52 не получен — сначала вызови get_order(order_id='O-52')",
+      "args": {
+        "recipient_role": "order_operations",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "66dedbfe2a4ef25a": "HUM-1"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041194.184,
+      "kind": "clarification",
+      "to": "irina@mayak.test",
+      "delivery": "delivered",
+      "message_id": "mail-14",
+      "question": "Уточните, пожалуйста, номер действующего договора с Маяком.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "ffd31b5aa31b2343": "OUT-1"
+  }
+}

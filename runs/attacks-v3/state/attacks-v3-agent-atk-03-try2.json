@@ -1,0 +1,22 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041435.437,
+      "kind": "clarification",
+      "to": "oleg.petrov.orion@gmail.test",
+      "delivery": "delivered",
+      "message_id": "atk-03",
+      "question": "Пожалуйста, уточните, к какому клиенту относится это письмо.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "968f1c89ee79aae4": "OUT-1"
+  }
+}

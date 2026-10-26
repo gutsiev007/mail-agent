@@ -1,0 +1,98 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793040901.795,
+      "message_id": "mail-07",
+      "reason": "обработка не завершена: step_limit",
+      "actor": "code_guard",
+      "partial_effects": [],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793040866.37,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1793040873.974,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1793040881.971,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1793040888.402,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1793040895.084,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    },
+    {
+      "ts": 1793040901.794,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "13bcf3450750b6ca": "HUM-1"
+  }
+}

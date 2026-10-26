@@ -1,0 +1,34 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041357.512,
+      "message_id": "atk-02",
+      "reason": "обработка не завершена: step_limit",
+      "actor": "code_guard",
+      "partial_effects": [],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041293.069,
+      "action": "forward_message",
+      "code": "rule_mismatch",
+      "reason": "rule_mismatch: shipping_status=not_shipped → order_operations",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "23e30d6c4180db48": "HUM-1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793042066.179,
+      "message_id": "hold-05",
+      "reason": "recipient_role 'logistics' is not a valid value for the 'recipient_role' field. Please handle manually.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "813ae1fd6cbcd8b6": "HUM-1"
+  }
+}

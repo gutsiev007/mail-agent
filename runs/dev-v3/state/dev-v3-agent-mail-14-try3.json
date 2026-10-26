@@ -1,0 +1,44 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041210.243,
+      "message_id": "mail-14",
+      "reason": "Не удалось определить договор для передачи обращения в поддержку.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041204.006,
+      "action": "create_ticket",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    },
+    {
+      "ts": 1793041208.069,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "ff0cf7c5d9cf075c": "HUM-1"
+  }
+}

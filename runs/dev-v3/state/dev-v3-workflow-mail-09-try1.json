@@ -1,0 +1,19 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793040929.283,
+      "message_id": "mail-09",
+      "reason": "Сведения о заказе O-52 недоступны",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "66dedbfe2a4ef25a": "HUM-1"
+  }
+}

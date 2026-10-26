@@ -1,0 +1,26 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1793041064.768,
+      "status": "open",
+      "customer_id": "C-11",
+      "contract_id": "D-11",
+      "recipient_role": "engineers_group",
+      "assignee": {
+        "kind": "group",
+        "id": "Север"
+      },
+      "notified": "engineers-sever@company.test",
+      "summary": "Терминалы на складе перестали включаться после перезагрузки. Нужна помощь инженеров.",
+      "message_id": "mail-11"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [],
+  "idempotency": {
+    "64d462e21b09577b": "T-NEW-1"
+  }
+}

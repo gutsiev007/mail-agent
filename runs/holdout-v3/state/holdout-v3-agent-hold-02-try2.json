@@ -1,0 +1,44 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793041872.702,
+      "message_id": "hold-02",
+      "reason": "Нет действующего договора, необходима передача человека для решения.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793041866.459,
+      "action": "create_ticket",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли engineers_group укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "engineers_group",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    },
+    {
+      "ts": 1793041870.53,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-31"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "d6003850321e77ef": "HUM-1"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "outbox": [],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793042045.386,
+      "message_id": "hold-04",
+      "reason": "обработка не завершена: step_limit",
+      "actor": "code_guard",
+      "partial_effects": [],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793042012.712,
+      "action": "forward_message",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли contract_manager укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1793042034.871,
+      "action": "forward_message",
+      "code": "rule_mismatch",
+      "reason": "rule_mismatch: D-21 действует (standard) — ответственному передают только завершённые; используй create_ticket",
+      "args": {
+        "recipient_role": "contract_manager",
+        "basis": {
+          "contract_id": "D-21",
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "1fdf1ac3d0bd3a08": "HUM-1"
+  }
+}

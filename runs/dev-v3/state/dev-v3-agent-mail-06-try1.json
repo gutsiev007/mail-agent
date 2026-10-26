@@ -1,0 +1,32 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793040749.172,
+      "kind": "clarification",
+      "to": "service@vektor-group.test",
+      "delivery": "delivered",
+      "message_id": "mail-06",
+      "question": "Кто является клиентом этого письма?",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793040751.417,
+      "message_id": "mail-06",
+      "reason": "Не удалось определить клиента по адресу отправителя. Просьба уточнить.",
+      "details": "",
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [],
+  "idempotency": {
+    "b40ea05cfd7b3b11": "OUT-1",
+    "b6a19c2475f7499c": "HUM-1"
+  }
+}

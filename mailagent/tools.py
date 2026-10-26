@@ -1,9 +1,15 @@
 """Общие инструменты для агента и workflow.
 
-Чтение — 5 инструментов с явными статусами found / not_found / ambiguous / unavailable.
+Чтение — 6 инструментов с явными статусами found / not_found / ambiguous / unavailable.
 Действия — 5 инструментов. Модель (или код workflow) только ПРЕДЛАГАЕТ действие:
 адрес получателя определяет код по роли и найденным фактам, а policy-проверка
 отклоняет действия, не подтверждённые фактами этой попытки.
+
+Граница (решение E2): аргументы проверяются по объявленным JSON-схемам до вызова функции.
+Ошибка модели → status invalid_arguments + code; ошибка программы → status error, code internal_error,
+трасса получает traceback, письмо передаётся человеку (это делает runner).
+
+Ответы с отказом имеют вид {"status": ..., "code": <машинный код>, "message": <текст для модели>}.
 """
 from __future__ import annotations
 
@@ -11,28 +17,35 @@ import hashlib
 import json
 import random
 import time
+import traceback
 
 from .stand import AckLost, Stand
 
-TOOLS_VERSION = "t2"  # t2: понятные причины blocked с перечнем полученных фактов; null-аргументы
+TOOLS_VERSION = "t3"  # t3: identify_sender, валидация по схеме, коды отказов, исполнитель {kind,id}, заявки из журнала
 
 ROLES = ["order_operations", "logistics", "support_general", "engineers_group", "contract_manager", "sales"]
 
 # ---------------------------------------------------------------- схемы
 READ_TOOLS = [
     {
+        "name": "identify_sender",
+        "description": (
+            "Определяет клиента, которому принадлежит адрес отправителя ЭТОГО письма. Аргументов нет: "
+            "адрес берётся из поля From самим кодом. Только этот инструмент подтверждает клиента; "
+            "без подтверждения пересылки и заявки невозможны. not_found — адрес не зарегистрирован: "
+            "запроси уточнение или передай человеку."),
+        "parameters": {"type": "object", "properties": {}, "additionalProperties": False},
+    },
+    {
         "name": "find_customer",
         "description": (
-            "Ищет клиента. По email отправителя — точное совпадение с контактом клиента (verified=true). "
-            "По названию компании — частичные совпадения (verified=false: это НЕ подтверждает, что отправитель "
-            "работает у клиента). Имя человека не используется: одно имя бывает у разных клиентов. "
-            "Ответ: status found | ambiguous | not_found | unavailable и список matches."),
+            "Справочный поиск клиентов по названию компании. Ничего не подтверждает: совпадение названия "
+            "не доказывает, что отправитель работает у клиента. Используй, чтобы понять, есть ли неоднозначность."),
         "parameters": {
             "type": "object",
-            "properties": {
-                "email": {"type": "string", "description": "Адрес отправителя из поля From"},
-                "company_name": {"type": "string", "description": "Название компании, упомянутое в письме"},
-            },
+            "properties": {"company_name": {"type": "string", "description": "Название компании из письма"}},
+            "required": ["company_name"],
+            "additionalProperties": False,
         },
     },
     {
@@ -43,10 +56,8 @@ READ_TOOLS = [
             "engineer_group (для extended), responsible (ответственный за договор). Ничего не изменяет."),
         "parameters": {
             "type": "object",
-            "properties": {
-                "contract_id": {"type": "string"},
-                "customer_id": {"type": "string"},
-            },
+            "properties": {"contract_id": {"type": "string"}, "customer_id": {"type": "string"}},
+            "additionalProperties": False,
         },
     },
     {
@@ -59,19 +70,18 @@ READ_TOOLS = [
             "type": "object",
             "properties": {"order_id": {"type": "string"}},
             "required": ["order_id"],
+            "additionalProperties": False,
         },
     },
     {
         "name": "find_tickets",
         "description": (
-            "Ищет обращения (заявки): по точному номеру (T-xx) или открытые обращения клиента (C-xx). "
-            "Возвращает статус, исполнителя, тему и дату последнего изменения."),
+            "Ищет обращения (заявки): по точному номеру (T-xx) или открытые обращения клиента (C-xx), "
+            "включая созданные ранее системой. Возвращает статус, исполнителя, тему."),
         "parameters": {
             "type": "object",
-            "properties": {
-                "ticket_id": {"type": "string"},
-                "customer_id": {"type": "string"},
-            },
+            "properties": {"ticket_id": {"type": "string"}, "customer_id": {"type": "string"}},
+            "additionalProperties": False,
         },
     },
     {
@@ -83,6 +93,7 @@ READ_TOOLS = [
             "type": "object",
             "properties": {"message_id": {"type": "string"}},
             "required": ["message_id"],
+            "additionalProperties": False,
         },
     },
 ]
@@ -96,6 +107,7 @@ _BASIS = {
         "contract_id": {"type": "string"},
     },
     "required": ["customer_id"],
+    "additionalProperties": False,
 }
 
 ACTION_TOOLS = [
@@ -104,7 +116,7 @@ ACTION_TOOLS = [
         "description": (
             "Пересылает исходное письмо ответственной роли. Адрес определяет система по роли и фактам: "
             "engineers_group — группа из расширенного договора, contract_manager — ответственный за договор. "
-            "Система отклонит пересылку (status blocked + reason), если факты в basis не были получены "
+            "Система отклонит пересылку (status blocked + code + message), если факты в basis не были получены "
             "инструментами или не соответствуют правилу маршрутизации. Повтор той же пересылки не создаёт вторую."),
         "parameters": {
             "type": "object",
@@ -115,15 +127,16 @@ ACTION_TOOLS = [
                 "note": {"type": "string", "description": "Коротко: что нужно сделать исполнителю"},
             },
             "required": ["message_id", "recipient_role", "basis", "note"],
+            "additionalProperties": False,
         },
     },
     {
         "name": "create_ticket",
         "description": (
-            "Создаёт новую заявку по техническому обращению: engineers_group (действующий расширенный договор) "
-            "или support_general (действующий обычный договор). Если у клиента уже есть открытая заявка, "
-            "вернёт status open_ticket_exists — тогда проверь, не продолжение ли это. "
-            "confirm_new_issue=true используй только если вопрос точно другой."),
+            "Создаёт новую заявку по ТЕХНИЧЕСКОЙ проблеме: engineers_group (действующий расширенный договор) "
+            "или support_general (действующий обычный договор). Вопросы о заказах, доставке и покупках — "
+            "через forward_message. Если у клиента уже есть открытая заявка, вернёт status open_ticket_exists — "
+            "тогда реши, продолжение ли это. confirm_new_issue=true — только если вопрос точно другой."),
         "parameters": {
             "type": "object",
             "properties": {
@@ -134,6 +147,7 @@ ACTION_TOOLS = [
                 "confirm_new_issue": {"type": "boolean"},
             },
             "required": ["message_id", "recipient_role", "basis", "summary"],
+            "additionalProperties": False,
         },
     },
     {
@@ -149,6 +163,7 @@ ACTION_TOOLS = [
                 "note": {"type": "string"},
             },
             "required": ["ticket_id", "message_id", "note"],
+            "additionalProperties": False,
         },
     },
     {
@@ -158,11 +173,9 @@ ACTION_TOOLS = [
             "Используй, когда клиента или предмет обращения нельзя определить однозначно."),
         "parameters": {
             "type": "object",
-            "properties": {
-                "message_id": {"type": "string"},
-                "question": {"type": "string"},
-            },
+            "properties": {"message_id": {"type": "string"}, "question": {"type": "string"}},
             "required": ["message_id", "question"],
+            "additionalProperties": False,
         },
     },
     {
@@ -178,6 +191,7 @@ ACTION_TOOLS = [
                 "details": {"type": "string"},
             },
             "required": ["message_id", "reason"],
+            "additionalProperties": False,
         },
     },
 ]
@@ -185,8 +199,8 @@ ACTION_TOOLS = [
 FINISH_TOOL = {
     "name": "finish",
     "description": (
-        "Завершает обработку письма. Вызывай после того, как каждое требование письма получило действие "
-        "(пересылка, заявка, уточнение или передача человеку)."),
+        "Завершает обработку письма. Система примет finish, только если по письму уже выполнено хотя бы одно "
+        "действие (пересылка, заявка, дополнение заявки, уточнение или передача человеку)."),
     "parameters": {
         "type": "object",
         "properties": {
@@ -198,15 +212,49 @@ FINISH_TOOL = {
             "summary": {"type": "string"},
         },
         "required": ["handled_requests", "summary"],
+        "additionalProperties": False,
     },
 }
 
 READ_NAMES = {t["name"] for t in READ_TOOLS}
 ACTION_NAMES = {t["name"] for t in ACTION_TOOLS}
+SCHEMAS = {t["name"]: t["parameters"] for t in READ_TOOLS + ACTION_TOOLS + [FINISH_TOOL]}
+
+_TYPES = {"string": str, "boolean": bool, "object": dict, "array": list}
+
+
+def validate(schema: dict, value, path: str = "") -> list[str]:
+    """Мини-валидатор JSON-схемы (type, properties, required, enum, items, additionalProperties)."""
+    errs = []
+    t = schema.get("type")
+    py = _TYPES.get(t)
+    where = path or "аргументы"
+    if py and (not isinstance(value, py) or (py is not bool and isinstance(value, bool))):
+        return [f"{where}: ожидается {t}"]
+    if "enum" in schema and value not in schema["enum"]:
+        errs.append(f"{where}: допустимые значения {schema['enum']}")
+    if t == "object":
+        props = schema.get("properties", {})
+        for r in schema.get("required", []):
+            if r not in value:
+                errs.append(f"{(path + '.') if path else ''}{r}: обязательное поле")
+        for k, v in value.items():
+            if k in props:
+                errs += validate(props[k], v, f"{(path + '.') if path else ''}{k}")
+            elif schema.get("additionalProperties") is False:
+                errs.append(f"{(path + '.') if path else ''}{k}: неизвестное поле")
+    if t == "array" and "items" in schema:
+        for i, v in enumerate(value):
+            errs += validate(schema["items"], v, f"{where}[{i}]")
+    return errs
 
 
 def _key(*parts) -> str:
     return hashlib.sha1("|".join(str(p) for p in parts).encode()).hexdigest()[:16]
+
+
+def _norm(text: str) -> str:
+    return " ".join((text or "").lower().split())
 
 
 # ---------------------------------------------------------------- контекст попытки
@@ -221,6 +269,10 @@ class RunContext:
         self.tickets: dict = {}
 
 
+def _fail(status: str, code: str, message: str, **extra) -> dict:
+    return {"status": status, "code": code, "message": message, **extra}
+
+
 # ---------------------------------------------------------------- выполнение
 class Toolbox:
     def __init__(self, stand: Stand, ctx: RunContext, tracer, max_read_retries: int = 2, backoff_base: float = 0.05):
@@ -228,70 +280,79 @@ class Toolbox:
         self.max_read_retries = max_read_retries
         self.backoff_base = backoff_base
         self._n = 0
+        self.internal_errors = 0
 
     # единая точка вызова — пишет tool_call / tool_result в трассу
-    def call(self, name: str, args: dict, actor: str, call_id: str | None = None) -> dict:
+    def call(self, name: str, args, actor: str, call_id: str | None = None) -> dict:
         self._n += 1
         call_id = call_id or f"call-{self._n:02d}"
-        args = args or {}
         self.tracer.event("tool_call", {"tool": name, "args": args, "actor": actor}, call_id=call_id)
         t0 = time.time()
         retries = 0
-        args = {k: v for k, v in args.items() if v is not None}  # t2: модель присылает null — считаем «не указано»
-        try:
-            if name in READ_NAMES:
-                while True:
-                    result = getattr(self, "_r_" + name)(**args)
-                    if result.get("status") != "unavailable" or retries >= self.max_read_retries:
-                        break
-                    retries += 1
-                    time.sleep(self.backoff_base * (2 ** retries) * (0.5 + random.random()))
-            elif name in ACTION_NAMES:
-                result = getattr(self, "_a_" + name)(**args)
+        if name not in READ_NAMES and name not in ACTION_NAMES:
+            result = _fail("invalid_arguments", "unknown_tool", f"Инструмента {name} нет")
+        else:
+            if isinstance(args, dict):
+                args = {k: v for k, v in args.items() if v is not None}  # null = «не указано»
+            errs = validate(SCHEMAS[name], args if args is not None else {})
+            if errs:
+                result = _fail("invalid_arguments", "invalid_arguments", "; ".join(errs), errors=errs)
             else:
-                result = {"status": "error", "error": f"unknown tool {name}"}
-        except (TypeError, AttributeError) as e:  # неверные аргументы — не повторяем
-            result = {"status": "invalid_arguments", "error": str(e)}
+                try:
+                    if name in READ_NAMES:
+                        while True:
+                            result = getattr(self, "_r_" + name)(**(args or {}))
+                            if result.get("status") != "unavailable" or retries >= self.max_read_retries:
+                                break
+                            retries += 1
+                            time.sleep(self.backoff_base * (2 ** retries) * (0.5 + random.random()))
+                    else:
+                        result = getattr(self, "_a_" + name)(**args)
+                except Exception as e:  # ошибка программы, а не модели
+                    self.internal_errors += 1
+                    self.tracer.event("internal_error", {"tool": name, "error": f"{type(e).__name__}: {e}",
+                                                         "traceback": traceback.format_exc()[-2000:]}, call_id=call_id)
+                    result = _fail("error", "internal_error",
+                                   "Внутренняя ошибка системы. Действие не выполнено; письмо будет передано сотруднику.")
         self.tracer.event("tool_result", {"tool": name, "result": result, "retries": retries,
                                           "started": round(t0, 3), "ended": round(time.time(), 3)},
                           call_id=call_id)
         return result
 
     # ------------------------------------------------ чтение
-    def _r_find_customer(self, email: str | None = None, company_name: str | None = None):
+    def _r_identify_sender(self):
+        if self.stand.take_fault("identify_sender") in ("unavailable", "unavailable_once"):
+            return {"status": "unavailable", "customer": None}
+        sender = (self.ctx.email.get("from") or "").strip().lower()
+        for cid, c in self.stand.world["customers"].items():
+            if any(ct["email"].lower() == sender for ct in c["contacts"]):
+                self.ctx.verified_customer = cid
+                return {"status": "found", "customer": {"customer_id": cid, "name": c["name"]}, "verified": True}
+        return {"status": "not_found", "customer": None, "verified": False,
+                "message": "Адрес отправителя не принадлежит ни одному клиенту. Клиента подтвердить нельзя."}
+
+    def _r_find_customer(self, company_name: str):
         if self.stand.take_fault("find_customer") in ("unavailable", "unavailable_once"):
             return {"status": "unavailable", "matches": []}
-        w = self.stand.world
-        matches = []
-        if email:
-            for cid, c in w["customers"].items():
-                if any(ct["email"].lower() == email.strip().lower() for ct in c["contacts"]):
-                    matches.append({"customer_id": cid, "name": c["name"], "match": "email_exact", "verified": True})
-        if company_name:
-            q_tokens = [t[:5] for t in company_name.lower().replace("«", " ").replace("»", " ").replace('"', " ").split() if len(t) >= 4]
-            scored = []
-            for cid, c in w["customers"].items():
-                n_tokens = [t[:5] for t in c["name"].lower().split()]
-                score = sum(q in n_tokens for q in q_tokens)
-                if score and cid not in [m["customer_id"] for m in matches]:
-                    scored.append((score, cid, c["name"]))
-            best = max((s for s, _, _ in scored), default=0)
-            for score, cid, name in scored:
-                if score == best:
-                    matches.append({"customer_id": cid, "name": name, "match": "name_partial", "verified": False})
-        verified = [m for m in matches if m["verified"]]
-        if len(verified) == 1:
-            self.ctx.verified_customer = verified[0]["customer_id"]
+        q_tokens = [t[:5] for t in company_name.lower().replace("«", " ").replace("»", " ").replace('"', " ").split() if len(t) >= 4]
+        scored = []
+        for cid, c in self.stand.world["customers"].items():
+            n_tokens = [t[:5] for t in c["name"].lower().split()]
+            score = sum(q in n_tokens for q in q_tokens)
+            if score:
+                scored.append((score, cid, c["name"]))
+        best = max((s for s, _, _ in scored), default=0)
+        matches = [{"customer_id": cid, "name": name, "verified": False} for s, cid, name in scored if s == best]
         if not matches:
             return {"status": "not_found", "matches": []}
-        status = "found" if len(verified) == 1 or len(matches) == 1 else "ambiguous"
-        return {"status": status, "matches": matches}
+        return {"status": "found" if len(matches) == 1 else "ambiguous", "matches": matches,
+                "note": "Справка. Отправитель этим не подтверждён."}
 
     def _r_get_contracts(self, contract_id: str | None = None, customer_id: str | None = None):
         if self.stand.take_fault("get_contracts") in ("unavailable", "unavailable_once"):
             return {"status": "unavailable", "contracts": []}
         if not contract_id and not customer_id:
-            return {"status": "invalid_arguments", "error": "нужен contract_id или customer_id"}
+            return _fail("invalid_arguments", "missing_argument", "нужен contract_id или customer_id")
         res = []
         for did, d in self.stand.world["contracts"].items():
             if (contract_id and did == contract_id.strip()) or (customer_id and d["customer_id"] == customer_id.strip()):
@@ -315,9 +376,9 @@ class Toolbox:
         if self.stand.take_fault("find_tickets") in ("unavailable", "unavailable_once"):
             return {"status": "unavailable", "tickets": []}
         if not ticket_id and not customer_id:
-            return {"status": "invalid_arguments", "error": "нужен ticket_id или customer_id"}
+            return _fail("invalid_arguments", "missing_argument", "нужен ticket_id или customer_id")
         res = []
-        for tid, t in self.stand.world["tickets"].items():
+        for tid, t in self.stand.all_tickets().items():
             if (ticket_id and tid == ticket_id.strip()) or (customer_id and t["customer_id"] == customer_id.strip() and t["status"] == "open"):
                 item = {"id": tid, **t}
                 res.append(item)
@@ -333,23 +394,23 @@ class Toolbox:
         return {"status": "found" if msgs else "not_found", "messages": msgs}
 
     # ------------------------------------------------ policy (guardrails)
-    def _blocked(self, action: str, reason: str, args: dict) -> dict:
-        self.stand.block({"action": action, "reason": reason, "args": args})
-        return {"status": "blocked", "reason": reason}
+    def _blocked(self, action: str, code: str, message: str, args: dict) -> dict:
+        self.stand.block({"action": action, "code": code, "reason": f"{code}: {message}", "args": args})
+        return _fail("blocked", code, message)
 
     def _check_message(self, message_id: str):
         return message_id == self.ctx.email["message_id"]
 
-    def _check_customer(self, basis: dict) -> str | None:
+    def _check_customer(self, basis: dict):
         cid = (basis or {}).get("customer_id")
         if not self.ctx.verified_customer:
-            return "sender_not_verified: отправитель не подтверждён через find_customer(email)"
+            return "sender_not_verified", "отправитель не подтверждён — вызови identify_sender"
         if cid != self.ctx.verified_customer:
-            return f"customer_mismatch: подтверждённый клиент отправителя {self.ctx.verified_customer}, в basis {cid}"
+            return "customer_mismatch", f"подтверждённый клиент отправителя {self.ctx.verified_customer}, в basis {cid}"
         return None
 
-    def _route(self, role: str, basis: dict) -> tuple[str | None, str | None, str | None]:
-        """→ (address, ref, error). Правила бизнеса, проверяемые кодом."""
+    def _route(self, role: str, basis: dict):
+        """→ (address, ref, assignee, error(code, message)). Правила бизнеса, проверяемые кодом."""
         w = self.stand.world
         cid = basis.get("customer_id")
         seen_o = ", ".join(f"{k} ({v['shipping_status']})" for k, v in self.ctx.orders.items()) or "нет"
@@ -357,58 +418,71 @@ class Toolbox:
         if role in ("order_operations", "logistics"):
             oid = basis.get("order_id")
             if not oid:
-                return None, None, (f"order_id_missing: для роли {role} укажи basis.order_id. "
-                                    f"Заказы, полученные в этой обработке: {seen_o}")
+                return None, None, None, ("order_id_missing", f"для роли {role} укажи basis.order_id. Заказы, полученные в этой обработке: {seen_o}")
             o = self.ctx.orders.get(oid)
             if not o:
-                return None, None, f"order_not_observed: заказ {oid} не получен — сначала вызови get_order(order_id='{oid}')"
+                return None, None, None, ("order_not_observed", f"заказ {oid} не получен — сначала вызови get_order(order_id='{oid}')")
             if o["customer_id"] != cid:
-                return None, None, f"order_customer_mismatch: {oid} принадлежит {o['customer_id']}"
+                return None, None, None, ("order_customer_mismatch", f"{oid} принадлежит другому клиенту")
             if o["payment_status"] != "paid":
-                return None, None, "order_not_paid: правило не определяет исполнителя, передай человеку"
+                return None, None, None, ("order_not_paid", "правило не определяет исполнителя, передай человеку")
             need = "order_operations" if o["shipping_status"] == "not_shipped" else "logistics"
             if role != need:
-                return None, None, f"rule_mismatch: shipping_status={o['shipping_status']} → {need}"
-            return w["directory"][role]["address"], oid, None
+                return None, None, None, ("rule_mismatch", f"shipping_status={o['shipping_status']} → {need}")
+            return w["directory"][role]["address"], oid, {"kind": "queue", "id": role}, None
         if role in ("engineers_group", "support_general", "contract_manager"):
             did = basis.get("contract_id")
             if not did:
-                return None, None, (f"contract_id_missing: для роли {role} укажи basis.contract_id. "
-                                    f"Договоры, полученные в этой обработке: {seen_d}. "
-                                    "Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку")
+                return None, None, None, ("contract_id_missing",
+                                          f"для роли {role} укажи basis.contract_id. Договоры, полученные в этой обработке: {seen_d}. "
+                                          "Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку")
             d = self.ctx.contracts.get(did)
             if not d:
-                return None, None, f"contract_not_observed: договор {did} не получен — сначала вызови get_contracts(contract_id='{did}')"
+                return None, None, None, ("contract_not_observed", f"договор {did} не получен — сначала вызови get_contracts(contract_id='{did}')")
             if d["customer_id"] != cid:
-                return None, None, f"contract_customer_mismatch: {did} принадлежит {d['customer_id']}"
+                return None, None, None, ("contract_customer_mismatch", f"{did} принадлежит другому клиенту")
             if role == "contract_manager":
                 if d["service_status"] != "expired":
-                    return None, None, f"rule_mismatch: {did} действует ({d['package']}) — ответственному передают только завершённые; используй create_ticket"
-                return w["staff"][d["responsible"]], did, None
+                    return None, None, None, ("rule_mismatch", f"{did} действует ({d['package']}) — ответственному передают только завершённые; используй create_ticket")
+                a = {"kind": "staff", "id": d["responsible"]}
+                return self.stand.resolve_assignee(a), did, a, None
             if d["service_status"] != "active":
-                return None, None, f"rule_mismatch: обслуживание по {did} закончилось → forward_message(recipient_role='contract_manager')"
+                return None, None, None, ("rule_mismatch", f"обслуживание по {did} закончилось → forward_message(recipient_role='contract_manager')")
             if role == "engineers_group":
                 if d["package"] != "extended":
-                    return None, None, "rule_mismatch: обычный пакет → support_general"
-                return w["engineer_groups"][d["engineer_group"]], did, None
+                    return None, None, None, ("rule_mismatch", "обычный пакет → support_general")
+                a = {"kind": "group", "id": d["engineer_group"]}
+                return self.stand.resolve_assignee(a), did, a, None
             if d["package"] != "standard":
-                return None, None, "rule_mismatch: расширенный пакет → engineers_group"
-            return w["directory"]["support_general"]["address"], did, None
+                return None, None, None, ("rule_mismatch", "расширенный пакет → engineers_group")
+            a = {"kind": "queue", "id": "support_general"}
+            return self.stand.resolve_assignee(a), did, a, None
         if role == "sales":
-            return w["directory"]["sales"]["address"], None, None
-        return None, None, f"unknown_role: {role}"
+            return w["directory"]["sales"]["address"], None, {"kind": "queue", "id": "sales"}, None
+        return None, None, None, ("unknown_role", role)
+
+    def _escalate_unresolved(self, message_id: str, assignee: dict, what: str) -> dict:
+        key = _key("escalate", message_id)
+        item = self.stand.find_by_key(key) or self.stand.escalate(key, {
+            "message_id": message_id, "reason": f"Исполнитель не найден: {assignee}", "details": what,
+            "to": self.stand.world["directory"]["human_triage"]["address"], "actor": "code"})
+        return _fail("escalated", "assignee_unresolved",
+                     f"Исполнитель {assignee.get('kind')}:{assignee.get('id')} не найден в справочнике. "
+                     "Действие не выполнено, письмо передано сотруднику.", queue_id=item["id"])
 
     # ------------------------------------------------ действия
     def _a_forward_message(self, message_id, recipient_role, basis, note):
         args = {"recipient_role": recipient_role, "basis": basis}
         if not self._check_message(message_id):
-            return self._blocked("forward_message", "wrong_message_id", args)
+            return self._blocked("forward_message", "wrong_message_id", "message_id не совпадает с обрабатываемым письмом", args)
         err = self._check_customer(basis)
         if err:
-            return self._blocked("forward_message", err, args)
-        address, ref, err = self._route(recipient_role, basis)
+            return self._blocked("forward_message", *err, args)
+        address, ref, assignee, err = self._route(recipient_role, basis)
         if err:
-            return self._blocked("forward_message", err, args)
+            return self._blocked("forward_message", *err, args)
+        if not address:
+            return self._escalate_unresolved(message_id, assignee, f"forward {recipient_role}")
         key = _key("forward", message_id, recipient_role, ref)
         existing = self.stand.find_by_key(key)
         if existing:
@@ -428,58 +502,61 @@ class Toolbox:
     def _a_create_ticket(self, message_id, recipient_role, basis, summary, confirm_new_issue=False):
         args = {"recipient_role": recipient_role, "basis": basis}
         if not self._check_message(message_id):
-            return self._blocked("create_ticket", "wrong_message_id", args)
+            return self._blocked("create_ticket", "wrong_message_id", "message_id не совпадает с обрабатываемым письмом", args)
         err = self._check_customer(basis)
         if err:
-            return self._blocked("create_ticket", err, args)
+            return self._blocked("create_ticket", *err, args)
         if recipient_role not in ("engineers_group", "support_general"):
-            return self._blocked("create_ticket", (f"role_not_allowed_for_ticket: create_ticket только для технических обращений "
-                                                    f"(engineers_group, support_general). Для роли {recipient_role} используй forward_message"), args)
-        address, ref, err = self._route(recipient_role, basis)
+            return self._blocked("create_ticket", "role_not_allowed_for_ticket",
+                                 f"create_ticket только для технических обращений; для роли {recipient_role} используй forward_message", args)
+        address, ref, assignee, err = self._route(recipient_role, basis)
         if err:
-            return self._blocked("create_ticket", err, args)
-        key = _key("ticket", message_id)
+            return self._blocked("create_ticket", *err, args)
+        key = _key("ticket", message_id, recipient_role, ref)
         existing = self.stand.find_by_key(key)
         if existing:
             return {"status": "duplicate", "ticket_id": existing["id"]}
-        open_t = [{"id": tid, "subject": t["subject"], "assignee": t["assignee"]}
-                  for tid, t in self.stand.world["tickets"].items()
+        open_t = [{"id": tid, "subject": t["subject"]} for tid, t in self.stand.all_tickets().items()
                   if t["customer_id"] == basis["customer_id"] and t["status"] == "open"]
         if open_t and not confirm_new_issue:
-            return {"status": "open_ticket_exists", "tickets": open_t}
-        assignee = (self.ctx.contracts[ref]["engineer_group"] if recipient_role == "engineers_group" else "Общая поддержка")
+            return _fail("open_ticket_exists", "open_ticket_exists",
+                         "У клиента есть открытая заявка. Если это продолжение — append_to_ticket; если вопрос другой — повтори с confirm_new_issue=true",
+                         tickets=open_t)
+        if not address:
+            return self._escalate_unresolved(message_id, assignee, f"ticket {recipient_role}")
         item = self.stand.create_ticket(key, {"customer_id": basis["customer_id"], "contract_id": ref,
                                               "recipient_role": recipient_role, "assignee": assignee,
-                                              "assignee_address": address, "summary": summary,
-                                              "message_id": message_id})
-        return {"status": "created", "ticket_id": item["id"], "assignee": assignee}
+                                              "notified": address, "summary": summary, "message_id": message_id})
+        return {"status": "created", "ticket_id": item["id"], "assignee": assignee, "notified": address}
 
     def _a_append_to_ticket(self, ticket_id, message_id, note):
         args = {"ticket_id": ticket_id}
         if not self._check_message(message_id):
-            return self._blocked("append_to_ticket", "wrong_message_id", args)
+            return self._blocked("append_to_ticket", "wrong_message_id", "message_id не совпадает с обрабатываемым письмом", args)
         if not self.ctx.verified_customer:
-            return self._blocked("append_to_ticket", "sender_not_verified", args)
+            return self._blocked("append_to_ticket", "sender_not_verified", "отправитель не подтверждён — вызови identify_sender", args)
         t = self.ctx.tickets.get(ticket_id)
         if not t:
-            return self._blocked("append_to_ticket", "ticket_not_observed: заявка не получена find_tickets", args)
+            return self._blocked("append_to_ticket", "ticket_not_observed", "заявка не получена find_tickets", args)
         if t["customer_id"] != self.ctx.verified_customer:
-            return self._blocked("append_to_ticket", "ticket_customer_mismatch", args)
+            return self._blocked("append_to_ticket", "ticket_customer_mismatch", "заявка принадлежит другому клиенту", args)
         if t["status"] != "open":
-            return self._blocked("append_to_ticket", "ticket_closed", args)
+            return self._blocked("append_to_ticket", "ticket_closed", "заявка закрыта", args)
         key = _key("append", ticket_id, message_id)
         existing = self.stand.find_by_key(key)
         if existing:
             return {"status": "duplicate", "update_id": existing["id"]}
-        notified = self.stand.world["staff"].get(t["assignee"], self.stand.world["directory"]["support_general"]["address"])
+        notified = self.stand.resolve_assignee(t["assignee"])
+        if not notified:
+            return self._escalate_unresolved(message_id, t["assignee"], f"append {ticket_id}")
         item = self.stand.append_ticket(key, {"ticket_id": ticket_id, "message_id": message_id,
-                                              "note": note, "notified": notified})
-        return {"status": "appended", "update_id": item["id"], "notified_assignee": t["assignee"]}
+                                              "note": note, "assignee": t["assignee"], "notified": notified})
+        return {"status": "appended", "update_id": item["id"], "assignee": t["assignee"], "notified": notified}
 
     def _a_request_clarification(self, message_id, question):
         if not self._check_message(message_id):
-            return self._blocked("request_clarification", "wrong_message_id", {})
-        key = _key("clarify", message_id)
+            return self._blocked("request_clarification", "wrong_message_id", "message_id не совпадает с обрабатываемым письмом", {})
+        key = _key("clarify", message_id, _norm(question))
         existing = self.stand.find_by_key(key)
         if existing:
             return {"status": "duplicate", "clarification_id": existing["id"]}
@@ -489,6 +566,7 @@ class Toolbox:
         return {"status": "sent", "clarification_id": item["id"], "to": to}
 
     def _a_escalate_to_human(self, message_id, reason, details=""):
+        # одна передача человеку на письмо: человек получает письмо целиком, повторные причины не плодят очередь
         key = _key("escalate", message_id)
         existing = self.stand.find_by_key(key)
         if existing:

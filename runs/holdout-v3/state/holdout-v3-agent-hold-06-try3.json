@@ -1,0 +1,90 @@
+{
+  "outbox": [],
+  "tickets_created": [
+    {
+      "id": "T-NEW-1",
+      "ts": 1793042194.62,
+      "status": "open",
+      "customer_id": "C-21",
+      "contract_id": "D-21",
+      "recipient_role": "support_general",
+      "assignee": {
+        "kind": "queue",
+        "id": "support_general"
+      },
+      "notified": "support@company.test",
+      "summary": "Пользователь Олег интересуется датой отгрузки заказа O-12345, но такого заказа нет в системе.",
+      "message_id": "hold-06"
+    }
+  ],
+  "ticket_updates": [],
+  "human_queue": [
+    {
+      "id": "HUM-1",
+      "ts": 1793042194.621,
+      "message_id": "hold-06",
+      "reason": "обработка не завершена: step_limit",
+      "actor": "code_guard",
+      "partial_effects": [
+        "create_ticket"
+      ],
+      "to": "triage@company.test"
+    }
+  ],
+  "blocked": [
+    {
+      "ts": 1793042177.706,
+      "action": "forward_message",
+      "code": "order_id_missing",
+      "reason": "order_id_missing: для роли logistics укажи basis.order_id. Заказы, полученные в этой обработке: нет",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    },
+    {
+      "ts": 1793042182.213,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-12345 не получен — сначала вызови get_order(order_id='O-12345')",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-12345"
+        }
+      }
+    },
+    {
+      "ts": 1793042186.696,
+      "action": "forward_message",
+      "code": "order_not_observed",
+      "reason": "order_not_observed: заказ O-12345 не получен — сначала вызови get_order(order_id='O-12345')",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-12345"
+        }
+      }
+    },
+    {
+      "ts": 1793042190.015,
+      "action": "create_ticket",
+      "code": "contract_id_missing",
+      "reason": "contract_id_missing: для роли support_general укажи basis.contract_id. Договоры, полученные в этой обработке: нет. Если договоров нет — вызови get_contracts(customer_id=...); если у клиента договора нет — передай человеку",
+      "args": {
+        "recipient_role": "support_general",
+        "basis": {
+          "customer_id": "C-21"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "f0a767ba6891ade3": "T-NEW-1",
+    "1067000050ad8390": "HUM-1"
+  }
+}

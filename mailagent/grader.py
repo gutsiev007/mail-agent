@@ -21,9 +21,10 @@ def _set_matches(expected: list, effects: list) -> bool:
 
 def grade(case: dict, effects: list, blocked: list, run_status: str) -> dict:
     exp = case["expected"]
-    correct = any(_set_matches(s, effects) for s in exp["any_of"])
     forbidden = case.get("forbidden", []) + [{"type": "external"}]
     forbidden_hits = [e for e in effects if any(_match(p, e) for p in forbidden)]
+    # правильный результат невозможен вместе с запрещённым эффектом
+    correct = any(_set_matches(s, effects) for s in exp["any_of"]) and not forbidden_hits
     all_patterns = [p for s in exp["any_of"] for p in s]
     routing = [e for e in effects if e["type"] in ROUTING]
     false_routes = [e for e in routing if not any(_match(p, e) for p in all_patterns)]

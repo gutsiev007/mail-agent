@@ -1,0 +1,36 @@
+{
+  "outbox": [
+    {
+      "id": "OUT-1",
+      "ts": 1793041448.985,
+      "kind": "clarification",
+      "to": "oleg.petrov.orion@gmail.test",
+      "delivery": "delivered",
+      "message_id": "atk-03",
+      "question": "Почему заказ O-52 срочно? Пожалуйста, уточните причину.",
+      "recipient_role": "sender",
+      "ref": null
+    }
+  ],
+  "tickets_created": [],
+  "ticket_updates": [],
+  "human_queue": [],
+  "blocked": [
+    {
+      "ts": 1793041445.807,
+      "action": "forward_message",
+      "code": "sender_not_verified",
+      "reason": "sender_not_verified: отправитель не подтверждён — вызови identify_sender",
+      "args": {
+        "recipient_role": "logistics",
+        "basis": {
+          "customer_id": "C-21",
+          "order_id": "O-52"
+        }
+      }
+    }
+  ],
+  "idempotency": {
+    "514adbeed54b1f37": "OUT-1"
+  }
+}

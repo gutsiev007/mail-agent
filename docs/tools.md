@@ -1,15 +1,18 @@
 # Шаг 2. Инструменты
 
+> Версия t3 (после ревью): `identify_sender` + справочный `find_customer`, проверка аргументов по схемам, коды отказов. Подробности — `docs/decisions/`.
+
 Определения (название, описание, схема) — в `mailagent/tools.py`; агент и workflow вызывают одни и те же функции через `Toolbox.call`.
 
 ## Выбранный набор
 
 | Инструмент | Возможность из каталога | Параметры и откуда их взять | Ответы | Цена ошибочного вызова |
 |---|---|---|---|---|
-| `find_customer(email?, company_name?)` | Найти клиента | email — из поля From; название — из текста | `found` / `ambiguous` / `not_found` / `unavailable`; у совпадения `verified` | Нет (чтение). Ошибка — принять `name_partial` за подтверждение; защищено кодом |
-| `get_contracts(contract_id? \| customer_id?)` | Посмотреть договор | D-xx — из письма или переписки; C-xx — из `find_customer` | `found` / `not_found` / `unavailable` | Нет |
+| `identify_sender()` | Найти клиента | аргументов нет: адрес берёт код из поля From (t3, решение 01) | `found` / `not_found` / `unavailable` | Нет (чтение). Единственный способ подтвердить клиента |
+| `find_customer(company_name)` | Найти клиента | название — из текста | `found` / `ambiguous` / `not_found`; никогда не подтверждает | Нет (справка) |
+| `get_contracts(contract_id? \| customer_id?)` | Посмотреть договор | D-xx — из письма или переписки; C-xx — из `identify_sender` | `found` / `not_found` / `unavailable` | Нет |
 | `get_order(order_id)` | Проверить заказ | O-xx — из письма | `found` / `not_found` / `unavailable` | Нет |
-| `find_tickets(ticket_id? \| customer_id?)` | Найти обращение | T-xx — из письма; C-xx — из `find_customer` | `found` / `not_found` / `unavailable` | Нет |
+| `find_tickets(ticket_id? \| customer_id?)` | Найти обращение | T-xx — из письма; C-xx — из `identify_sender` | `found` / `not_found` / `unavailable` | Нет |
 | `read_thread(message_id)` | Прочитать переписку | id текущего письма | `found` / `not_found` / `unavailable` | Нет |
 | `forward_message(message_id, recipient_role, basis, note)` | Переслать письмо | роль — выбор модели; **адрес — код** по роли и фактам | `sent` / `duplicate` / `blocked`+reason | Неверный исполнитель; защищено policy-проверкой |
 | `create_ticket(message_id, recipient_role, basis, summary, confirm_new_issue?)` | Создать заявку | договор и клиент — из ответов чтения | `created` / `open_ticket_exists` / `duplicate` / `blocked` | Дубликат заявки |
@@ -35,7 +38,7 @@
 | Вариант | Вызовов | Проверка ответа | Лишние данные |
 |---|---|---|---|
 | `get_customer_context(email)` → клиент, все договоры, заказы, обращения, переписка | 1 | Труднее: модель сама ищет нужное поле в большом объекте | Договоры и обращения, не нужные для заказа; растут токены |
-| `find_customer` + `get_order` | 2 | Легко: policy сверяет `order.customer_id` и `shipping_status` | Нет |
+| `identify_sender` + `get_order` | 2 | Легко: policy сверяет `order.customer_id` и `shipping_status` | Нет |
 
 Выбрано разделение: на письме 2 это +1 вызов, но ответ однозначно проверяется кодом, а на письмах 1/7 модель берёт только нужные источники.
 
@@ -47,7 +50,7 @@
 
 Модель **предлагает** действие, код **проверяет и исполняет**:
 
-1. Отправитель подтверждён только точным email (`verified=true`); `basis.customer_id` должен с ним совпадать.
+1. Отправитель подтверждается только `identify_sender` по точному email из поля From (модель не может передать другой адрес); `basis.customer_id` должен с ним совпадать.
 2. Заказ/договор/заявка из `basis` должны быть получены инструментом в этой же попытке (защита от выдуманных номеров).
 3. Роль соответствует правилу: `not_shipped` → `order_operations`, отгружен → `logistics`; расширенный действующий → `engineers_group`; обычный → `support_general`; закончился → `contract_manager`.
 4. Адрес выбирает код по роли — указать произвольный адрес нельзя (письмо 8).
